@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="page-title">Cargando...</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         /* ===== VARIABLES NEUTRAS ===== */
         :root {
@@ -353,10 +352,6 @@
             font-size: 0.9rem;
         }
 
-        .habitacion-features span i {
-            margin-right: 0.3rem;
-        }
-
         .habitacion-footer {
             display: flex;
             justify-content: space-between;
@@ -481,10 +476,6 @@
             flex-wrap: wrap;
         }
 
-        .experiencia-meta span i {
-            margin-right: 0.3rem;
-        }
-
         .experiencia-desc {
             color: var(--color-texto);
             margin-bottom: 1.5rem;
@@ -514,10 +505,6 @@
             border-radius: 50px;
             font-size: 0.9rem;
             color: var(--color-texto);
-        }
-
-        .incluye-items span i {
-            margin-right: 0.3rem;
         }
 
         .experiencia-footer {
@@ -605,10 +592,6 @@
             font-size: 0.9rem;
             color: var(--color-texto);
             font-weight: 500;
-        }
-
-        .servicio-horario i {
-            margin-right: 0.3rem;
         }
 
         /* ===== SOBRE NOSOTROS ===== */
@@ -791,11 +774,6 @@
             gap: 0.5rem;
         }
 
-        .info-card h3 i {
-            font-size: 1.5rem;
-            color: var(--color-secundario);
-        }
-
         .info-card p {
             color: var(--color-texto);
             line-height: 1.6;
@@ -807,11 +785,6 @@
             text-decoration: none;
             font-weight: 500;
             transition: color 0.3s;
-        }
-
-        .info-card a:hover {
-            color: var(--color-acento);
-            text-decoration: underline;
         }
 
         .redes-sociales {
@@ -847,7 +820,6 @@
             font-size: 1.5rem;
             border: 2px solid var(--color-secundario);
             transition: all 0.3s;
-            color: var(--color-texto);
         }
 
         .red-social:hover i {
@@ -1813,11 +1785,6 @@
     </footer>
 
     <script>
-        // Configuración Supabase
-        const supabaseUrl = 'https://dpcjjxjgpacxhhrgyryf.supabase.co';
-        const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImRwY2pqeGpncGFjeGhocmd5cnlmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzQwODg1MzQsImV4cCI6MjA4OTY2NDUzNH0.y2weY_npOtBMpkJ3XFx_U8b0P9b8Fbr9SaGksr8-y0M';
-        const supabase = supabase.createClient(supabaseUrl, supabaseKey);
-
         // ============================================
         // MENÚ Y NAVEGACIÓN
         // ============================================
@@ -1875,11 +1842,9 @@
         function initHero(datos) {
             const hero = document.getElementById('hero');
             if (!hero || !datos) return;
-            
             if (datos.imagen) {
                 hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,${datos.overlay || 0.4}), rgba(0,0,0,${datos.overlay || 0.4})), url('${datos.imagen}')`;
             }
-            
             document.getElementById('hero-superior').textContent = datos.texto_superior || '';
             document.getElementById('hero-principal').textContent = datos.texto_principal || '';
             document.getElementById('hero-inferior').textContent = datos.texto_inferior || '';
@@ -1887,344 +1852,115 @@
         }
 
         // ============================================
-        // FUNCIÓN HABITACIONES (DESDE SUPABASE)
+        // FUNCIÓN HABITACIONES (DESDE JSON)
         // ============================================
-        async function initHabitacionesDesdeDB() {
+        function initHabitaciones(lista) {
             const grid = document.getElementById('habitaciones-grid');
-            if (!grid) return;
+            if (!grid || !lista) return;
 
-            try {
-                const { data: habitaciones, error } = await supabase
-                    .from('habitaciones')
-                    .select('*')
-                    .order('id');
-
-                if (error) throw error;
-
-                if (!habitaciones || habitaciones.length === 0) {
-                    grid.innerHTML = '<p class="contenido-placeholder">No hay habitaciones disponibles.</p>';
-                    return;
-                }
-
-                grid.innerHTML = '';
-
-                habitaciones.forEach(hab => {
-                    const card = document.createElement('article');
-                    card.className = 'habitacion-card';
-                    card.setAttribute('data-id', hab.id);
-                    
-                    let badgeHTML = '';
-                    if (hab.promocion) {
-                        badgeHTML = `<div class="habitacion-badge badge-oferta">🎁 ${hab.promocion}</div>`;
-                    } else if (hab.disponibles < 3) {
-                        badgeHTML = `<div class="habitacion-badge badge-popular">🔥 Últimas unidades</div>`;
-                    } else if (hab.badge) {
-                        badgeHTML = `<div class="habitacion-badge badge-${hab.badge_tipo || 'popular'}">${hab.badge}</div>`;
-                    }
-                    
-                    // Parsear caracteristicas si es JSON string
-                    let caracteristicas = hab.caracteristicas;
-                    if (typeof caracteristicas === 'string') {
-                        try {
-                            caracteristicas = JSON.parse(caracteristicas);
-                        } catch(e) {
-                            caracteristicas = [];
-                        }
-                    }
-                    
-                    card.innerHTML = `
-                        <div class="habitacion-img">
-                            <img src="${hab.imagen}" alt="${hab.nombre}" loading="lazy">
-                            ${badgeHTML}
-                        </div>
-                        <div class="habitacion-content">
-                            <h3>${hab.nombre}</h3>
-                            <p class="habitacion-desc">${hab.descripcion}</p>
-                            <div class="habitacion-features">
-                                ${caracteristicas.map(c => `<span>${c}</span>`).join('')}
-                            </div>
-                            <div class="habitacion-footer">
-                                <span class="precio">$${hab.precio} <small>/ noche</small></span>
-                                <button class="btn-reservar" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('habitacion'); }, 100);">Reservar</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    grid.appendChild(card);
-                });
-
-                // Guardar en window para reservas
-                window.habitacionesData = habitaciones;
-
-            } catch (error) {
-                console.error('Error cargando habitaciones:', error);
-                grid.innerHTML = '<p class="contenido-placeholder">Error al cargar habitaciones.</p>';
-            }
-        }
-
-        // ============================================
-        // FUNCIÓN EXPERIENCIAS (DESDE SUPABASE)
-        // ============================================
-        async function initExperienciasDesdeDB() {
-            const grid = document.getElementById('experiencias-grid');
-            if (!grid) return;
-
-            try {
-                const { data: experiencias, error } = await supabase
-                    .from('experiencias')
-                    .select('*')
-                    .order('id');
-
-                if (error) throw error;
-
-                if (!experiencias || experiencias.length === 0) {
-                    grid.innerHTML = '<p class="contenido-placeholder">No hay experiencias disponibles.</p>';
-                    return;
-                }
-
-                grid.innerHTML = '';
-
-                experiencias.forEach(exp => {
-                    const card = document.createElement('article');
-                    card.className = 'experiencia-card';
-                    
-                    // Parsear incluye
-                    let incluye = exp.incluye;
-                    if (typeof incluye === 'string') {
-                        try {
-                            incluye = JSON.parse(incluye);
-                        } catch(e) {
-                            incluye = [];
-                        }
-                    }
-                    
-                    const incluyeHTML = (incluye || []).map(item => `<span>${item}</span>`).join('');
-                    
-                    card.innerHTML = `
-                        <div class="experiencia-img">
-                            <img src="${exp.imagen}" alt="${exp.nombre}" loading="lazy">
-                        </div>
-                        <div class="experiencia-content">
-                            <h3>${exp.nombre}</h3>
-                            <div class="experiencia-meta">
-                                ${exp.duracion ? `<span><i class="fas fa-clock"></i> ${exp.duracion}</span>` : ''}
-                            </div>
-                            <p class="experiencia-desc">${exp.descripcion}</p>
-                            ${incluyeHTML ? `
-                                <div class="experiencia-incluye">
-                                    <h4><i class="fas fa-check-circle"></i> Incluye:</h4>
-                                    <div class="incluye-items">
-                                        ${incluyeHTML}
-                                    </div>
-                                </div>
-                            ` : ''}
-                            <div class="experiencia-footer">
-                                <span class="experiencia-precio">$${exp.precio} <small>por persona</small></span>
-                                <button class="btn-experiencia" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('experiencia'); }, 100);">Reservar</button>
-                            </div>
-                        </div>
-                    `;
-                    
-                    grid.appendChild(card);
-                });
-
-                window.experienciasData = experiencias;
-
-            } catch (error) {
-                console.error('Error cargando experiencias:', error);
-                grid.innerHTML = '<p class="contenido-placeholder">Error al cargar experiencias.</p>';
-            }
-        }
-
-        // ============================================
-        // FUNCIÓN SERVICIOS (DESDE SUPABASE)
-        // ============================================
-        async function initServiciosDesdeDB() {
-            const grid = document.getElementById('servicios-grid');
-            if (!grid) return;
-
-            try {
-                const { data: servicios, error } = await supabase
-                    .from('servicios')
-                    .select('*')
-                    .order('id');
-
-                if (error) throw error;
-
-                if (!servicios || servicios.length === 0) {
-                    grid.innerHTML = '<p class="contenido-placeholder">No hay servicios disponibles.</p>';
-                    return;
-                }
-
-                grid.innerHTML = '';
-
-                servicios.forEach(serv => {
-                    const card = document.createElement('article');
-                    card.className = 'servicio-card';
-                    
-                    card.innerHTML = `
-                        <div class="servicio-icono">${serv.icono}</div>
-                        <h3>${serv.nombre}</h3>
-                        <p class="servicio-desc">${serv.descripcion}</p>
-                        <span class="servicio-horario"><i class="fas fa-clock"></i> ${serv.horario}</span>
-                    `;
-                    
-                    grid.appendChild(card);
-                });
-
-            } catch (error) {
-                console.error('Error cargando servicios:', error);
-                grid.innerHTML = '<p class="contenido-placeholder">Error al cargar servicios.</p>';
-            }
-        }
-
-        // ============================================
-        // FUNCIÓN GALERÍA
-        // ============================================
-        let galeriaState = {
-            items: [],
-            currentIndex: 0,
-            currentFotos: [],
-            currentCategory: 'all'
-        };
-
-        function initGaleria(datos) {
-            if (!datos?.items) return;
-
-            galeriaState.items = datos.items;
-            
-            if (datos.titulo) document.getElementById('galeria-titulo').textContent = datos.titulo;
-            if (datos.subtitulo) document.getElementById('galeria-subtitulo').textContent = datos.subtitulo;
-
-            renderizarGaleria(galeriaState.items);
-        }
-
-        function renderizarGaleria(items) {
-            const grid = document.getElementById('galeria-grid');
-            if (!grid) return;
-            
             grid.innerHTML = '';
-            
-            items.forEach((item, index) => {
-                const galeriaItem = document.createElement('div');
-                galeriaItem.className = 'galeria-item';
-                galeriaItem.dataset.category = item.categoria;
-                galeriaItem.dataset.index = index;
+
+            function crearTarjeta(hab) {
+                const card = document.createElement('article');
+                card.className = 'habitacion-card';
+                card.setAttribute('data-id', hab.id);
                 
-                galeriaItem.innerHTML = `
-                    <img src="${item.fotos[0]}" alt="${item.titulo}" loading="lazy">
-                    <div class="galeria-overlay">
-                        <h3>${item.titulo}</h3>
-                        <p>${item.descripcion}</p>
-                        <button class="btn-ver-mas" data-index="${index}">Ver más</button>
+                let badgeHTML = '';
+                if (hab.promocion) {
+                    badgeHTML = `<div class="habitacion-badge badge-oferta">🎁 ${hab.promocion}</div>`;
+                } else if (hab.disponibles < 3) {
+                    badgeHTML = `<div class="habitacion-badge badge-popular">🔥 Últimas unidades</div>`;
+                } else if (hab.badgePermanente) {
+                    badgeHTML = `<div class="habitacion-badge badge-${hab.badgeTipo || 'popular'}">${hab.badgePermanente}</div>`;
+                }
+                
+                card.innerHTML = `
+                    <div class="habitacion-img">
+                        <img src="${hab.imagen}" alt="${hab.nombre}" loading="lazy">
+                        ${badgeHTML}
+                    </div>
+                    <div class="habitacion-content">
+                        <h3>${hab.nombre}</h3>
+                        <p class="habitacion-desc">${hab.descripcion}</p>
+                        <div class="habitacion-features">
+                            ${hab.caracteristicas.map(c => `<span>${c}</span>`).join('')}
+                        </div>
+                        <div class="habitacion-footer">
+                            <span class="precio">$${hab.precio} <small>/ noche</small></span>
+                            <button class="btn-reservar" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('habitacion'); }, 100);">Reservar</button>
+                        </div>
                     </div>
                 `;
-                
-                const btnVerMas = galeriaItem.querySelector('.btn-ver-mas');
-                btnVerMas.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    abrirModalGaleria(index);
-                });
-                
-                grid.appendChild(galeriaItem);
+                return card;
+            }
+            lista.forEach(hab => grid.appendChild(crearTarjeta(hab)));
+            window.habitacionesData = lista;
+        }
+
+        // ============================================
+        // FUNCIÓN EXPERIENCIAS (DESDE JSON)
+        // ============================================
+        function initExperiencias(datos) {
+            const grid = document.getElementById('experiencias-grid');
+            if (!grid || !datos?.lista) return;
+
+            if (datos.titulo) document.getElementById('exp-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('exp-subtitulo').textContent = datos.subtitulo;
+
+            grid.innerHTML = '';
+
+            datos.lista.forEach(exp => {
+                const card = document.createElement('article');
+                card.className = 'experiencia-card';
+                const badgeHTML = exp.badge ? `<div class="experiencia-badge badge-${exp.badgeTipo || 'popular'}">${exp.badge}</div>` : '';
+                const incluyeHTML = (exp.incluye || []).map(item => `<span>${item}</span>`).join('');
+
+                card.innerHTML = `
+                    <div class="experiencia-img">
+                        <img src="${exp.imagen}" alt="${exp.nombre}" loading="lazy">
+                        ${badgeHTML}
+                    </div>
+                    <div class="experiencia-content">
+                        <h3>${exp.nombre}</h3>
+                        <div class="experiencia-meta">
+                            ${exp.duracion ? `<span><i class="fas fa-clock"></i> ${exp.duracion}</span>` : ''}
+                        </div>
+                        <p class="experiencia-desc">${exp.descripcion}</p>
+                        ${incluyeHTML ? `<div class="experiencia-incluye"><h4><i class="fas fa-check-circle"></i> Incluye:</h4><div class="incluye-items">${incluyeHTML}</div></div>` : ''}
+                        <div class="experiencia-footer">
+                            <span class="experiencia-precio">$${exp.precio} <small>por persona</small></span>
+                            <button class="btn-experiencia" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('experiencia'); }, 100);">Reservar</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
             });
+            window.experienciasData = datos.lista;
         }
-
-        function abrirModalGaleria(index) {
-            const item = galeriaState.items[index];
-            galeriaState.currentFotos = item.fotos;
-            galeriaState.currentIndex = 0;
-            
-            document.getElementById('modal-imagen').src = galeriaState.currentFotos[0];
-            document.getElementById('modal-titulo').textContent = item.titulo;
-            document.getElementById('modal-descripcion').textContent = item.descripcion;
-            document.getElementById('modal-galeria').style.display = 'block';
-            document.body.style.overflow = 'hidden';
-        }
-
-        function cerrarModalGaleria() {
-            document.getElementById('modal-galeria').style.display = 'none';
-            document.body.style.overflow = '';
-        }
-
-        function cambiarImagenGaleria(direccion) {
-            galeriaState.currentIndex = (galeriaState.currentIndex + direccion + galeriaState.currentFotos.length) % galeriaState.currentFotos.length;
-            document.getElementById('modal-imagen').src = galeriaState.currentFotos[galeriaState.currentIndex];
-        }
-
-        document.querySelector('.modal-cerrar')?.addEventListener('click', cerrarModalGaleria);
-        document.getElementById('modal-galeria')?.addEventListener('click', function(e) {
-            if (e.target === this) {
-                cerrarModalGaleria();
-            }
-        });
-        document.addEventListener('keydown', function(e) {
-            if (document.getElementById('modal-galeria').style.display === 'block') {
-                if (e.key === 'Escape') {
-                    cerrarModalGaleria();
-                } else if (e.key === 'ArrowLeft') {
-                    cambiarImagenGaleria(-1);
-                } else if (e.key === 'ArrowRight') {
-                    cambiarImagenGaleria(1);
-                }
-            }
-        });
 
         // ============================================
-        // FUNCIÓN CONTACTO
+        // FUNCIÓN SERVICIOS (DESDE JSON)
         // ============================================
-        function initContacto(datos) {
-            if (!datos) return;
+        function initServicios(datos) {
+            const grid = document.getElementById('servicios-grid');
+            if (!grid || !datos?.lista) return;
 
-            if (datos.titulo) document.getElementById('contacto-titulo').textContent = datos.titulo;
-            if (datos.subtitulo) document.getElementById('contacto-subtitulo').textContent = datos.subtitulo;
+            if (datos.titulo) document.getElementById('servicios-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('servicios-subtitulo').textContent = datos.subtitulo;
 
-            const container = document.getElementById('contacto-info');
-            if (!container) return;
+            grid.innerHTML = '';
 
-            let html = '';
-
-            if (datos.direccion) {
-                html += `
-                    <div class="info-card">
-                        <h3><i class="fas fa-map-marker-alt"></i> Dirección</h3>
-                        <p>${datos.direccion.replace(/\n/g, '<br>')}</p>
-                    </div>
+            datos.lista.forEach(servicio => {
+                const card = document.createElement('article');
+                card.className = 'servicio-card';
+                card.innerHTML = `
+                    <div class="servicio-icono">${servicio.icono}</div>
+                    <h3>${servicio.nombre}</h3>
+                    <p class="servicio-desc">${servicio.descripcion}</p>
+                    <span class="servicio-horario"><i class="fas fa-clock"></i> ${servicio.horario}</span>
                 `;
-            }
-
-            if (datos.telefono || datos.email) {
-                html += `<div class="info-card"><h3><i class="fas fa-phone-alt"></i> Contacto</h3>`;
-                if (datos.telefono) {
-                    html += `<p><strong>Teléfono:</strong> <a href="tel:${datos.telefono}" title="Llamar ahora">${datos.telefono}</a></p>`;
-                }
-                if (datos.email) {
-                    html += `<p><strong>Email:</strong> <a href="mailto:${datos.email}" title="Enviar correo">${datos.email}</a></p>`;
-                }
-                html += `</div>`;
-            }
-
-            if (datos.redes && datos.redes.length > 0) {
-                html += `<div class="info-card"><h3><i class="fas fa-share-alt"></i> Síguenos</h3><div class="redes-sociales">`;
-                datos.redes.forEach(red => {
-                    html += `
-                        <a href="${red.url}" class="red-social" target="_blank" title="Ir a ${red.nombre}">
-                            ${red.icono}
-                            <span class="nombre">${red.nombre}</span>
-                        </a>
-                    `;
-                });
-                html += `</div></div>`;
-            }
-
-            container.innerHTML = html;
-
-            const mapaContainer = document.getElementById('mapa-container');
-            if (mapaContainer && datos.mapa) {
-                mapaContainer.innerHTML = `
-                    <iframe src="${datos.mapa}" allowfullscreen="" loading="lazy" title="Ubicación del hotel"></iframe>
-                `;
-            }
+                grid.appendChild(card);
+            });
         }
 
         // ============================================
@@ -2232,33 +1968,22 @@
         // ============================================
         function initNosotros(datos) {
             if (!datos) return;
-
             if (datos.titulo) document.getElementById('nosotros-titulo').textContent = datos.titulo;
             if (datos.subtitulo) document.getElementById('nosotros-subtitulo').textContent = datos.subtitulo;
-
             const imagenContainer = document.getElementById('nosotros-imagen');
             if (imagenContainer && datos.imagen) {
                 imagenContainer.innerHTML = `<img src="${datos.imagen}" alt="Sobre Nosotros">`;
             }
-
             const contenidoContainer = document.getElementById('nosotros-contenido');
             if (!contenidoContainer) return;
-
             let html = `<p class="nosotros-historia">${datos.historia}</p>`;
-
             if (datos.valores && datos.valores.length > 0) {
                 html += '<div class="nosotros-valores">';
                 datos.valores.forEach(valor => {
-                    html += `
-                        <div class="valor-item">
-                            <span class="valor-icono">${valor.icono}</span>
-                            <span>${valor.texto}</span>
-                        </div>
-                    `;
+                    html += `<div class="valor-item"><span class="valor-icono">${valor.icono}</span><span>${valor.texto}</span></div>`;
                 });
                 html += '</div>';
             }
-
             contenidoContainer.innerHTML = html;
         }
 
@@ -2268,21 +1993,16 @@
         function initTestimonios(datos) {
             const grid = document.getElementById('testimonios-grid');
             if (!grid || !datos?.lista) return;
-
             if (datos.titulo) document.getElementById('testimonios-titulo').textContent = datos.titulo;
             if (datos.subtitulo) document.getElementById('testimonios-subtitulo').textContent = datos.subtitulo;
-
             grid.innerHTML = '';
-
             datos.lista.forEach(testimonio => {
                 const card = document.createElement('article');
                 card.className = 'testimonio-card';
-                
                 let estrellas = '';
                 for (let i = 0; i < 5; i++) {
                     estrellas += i < testimonio.rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
                 }
-                
                 card.innerHTML = `
                     <p class="testimonio-texto">${testimonio.texto}</p>
                     <div class="testimonio-autor">
@@ -2294,9 +2014,101 @@
                         </div>
                     </div>
                 `;
-                
                 grid.appendChild(card);
             });
+        }
+
+        // ============================================
+        // FUNCIÓN GALERÍA
+        // ============================================
+        let galeriaState = { items: [], currentIndex: 0, currentFotos: [] };
+        function initGaleria(datos) {
+            if (!datos?.items) return;
+            galeriaState.items = datos.items;
+            if (datos.titulo) document.getElementById('galeria-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('galeria-subtitulo').textContent = datos.subtitulo;
+            renderizarGaleria(galeriaState.items);
+        }
+        function renderizarGaleria(items) {
+            const grid = document.getElementById('galeria-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            items.forEach((item, index) => {
+                const galeriaItem = document.createElement('div');
+                galeriaItem.className = 'galeria-item';
+                galeriaItem.dataset.category = item.categoria;
+                galeriaItem.innerHTML = `
+                    <img src="${item.fotos[0]}" alt="${item.titulo}" loading="lazy">
+                    <div class="galeria-overlay">
+                        <h3>${item.titulo}</h3>
+                        <p>${item.descripcion}</p>
+                        <button class="btn-ver-mas" data-index="${index}">Ver más</button>
+                    </div>
+                `;
+                const btn = galeriaItem.querySelector('.btn-ver-mas');
+                btn.addEventListener('click', (e) => { e.stopPropagation(); abrirModalGaleria(index); });
+                grid.appendChild(galeriaItem);
+            });
+        }
+        function abrirModalGaleria(index) {
+            const item = galeriaState.items[index];
+            galeriaState.currentFotos = item.fotos;
+            galeriaState.currentIndex = 0;
+            document.getElementById('modal-imagen').src = galeriaState.currentFotos[0];
+            document.getElementById('modal-titulo').textContent = item.titulo;
+            document.getElementById('modal-descripcion').textContent = item.descripcion;
+            document.getElementById('modal-galeria').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function cerrarModalGaleria() {
+            document.getElementById('modal-galeria').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        function cambiarImagenGaleria(direccion) {
+            galeriaState.currentIndex = (galeriaState.currentIndex + direccion + galeriaState.currentFotos.length) % galeriaState.currentFotos.length;
+            document.getElementById('modal-imagen').src = galeriaState.currentFotos[galeriaState.currentIndex];
+        }
+        document.querySelector('.modal-cerrar')?.addEventListener('click', cerrarModalGaleria);
+        document.getElementById('modal-galeria')?.addEventListener('click', function(e) { if (e.target === this) cerrarModalGaleria(); });
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('modal-galeria').style.display === 'block') {
+                if (e.key === 'Escape') cerrarModalGaleria();
+                else if (e.key === 'ArrowLeft') cambiarImagenGaleria(-1);
+                else if (e.key === 'ArrowRight') cambiarImagenGaleria(1);
+            }
+        });
+
+        // ============================================
+        // FUNCIÓN CONTACTO
+        // ============================================
+        function initContacto(datos) {
+            if (!datos) return;
+            if (datos.titulo) document.getElementById('contacto-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('contacto-subtitulo').textContent = datos.subtitulo;
+            const container = document.getElementById('contacto-info');
+            if (!container) return;
+            let html = '';
+            if (datos.direccion) {
+                html += `<div class="info-card"><h3><i class="fas fa-map-marker-alt"></i> Dirección</h3><p>${datos.direccion.replace(/\n/g, '<br>')}</p></div>`;
+            }
+            if (datos.telefono || datos.email) {
+                html += `<div class="info-card"><h3><i class="fas fa-phone-alt"></i> Contacto</h3>`;
+                if (datos.telefono) html += `<p><strong>Teléfono:</strong> <a href="tel:${datos.telefono}" title="Llamar ahora">${datos.telefono}</a></p>`;
+                if (datos.email) html += `<p><strong>Email:</strong> <a href="mailto:${datos.email}" title="Enviar correo">${datos.email}</a></p>`;
+                html += `</div>`;
+            }
+            if (datos.redes && datos.redes.length > 0) {
+                html += `<div class="info-card"><h3><i class="fas fa-share-alt"></i> Síguenos</h3><div class="redes-sociales">`;
+                datos.redes.forEach(red => {
+                    html += `<a href="${red.url}" class="red-social" target="_blank" title="Ir a ${red.nombre}">${red.icono}<span class="nombre">${red.nombre}</span></a>`;
+                });
+                html += `</div></div>`;
+            }
+            container.innerHTML = html;
+            const mapaContainer = document.getElementById('mapa-container');
+            if (mapaContainer && datos.mapa) {
+                mapaContainer.innerHTML = `<iframe src="${datos.mapa}" allowfullscreen="" loading="lazy" title="Ubicación del hotel"></iframe>`;
+            }
         }
 
         // ============================================
@@ -2312,7 +2124,6 @@
             tabActivo: 'habitacion',
             disponibilidad: {}
         };
-
         function generarDisponibilidad() {
             for (let i = 0; i < 90; i++) {
                 const fecha = new Date();
@@ -2326,188 +2137,104 @@
         function renderizarCalendario() {
             const primerDia = new Date(reservasState.añoActual, reservasState.mesActual, 1);
             const ultimoDia = new Date(reservasState.añoActual, reservasState.mesActual + 1, 0);
-            
-            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 
-                           'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
-            document.getElementById('mes-actual-reservas').textContent = 
-                `${meses[reservasState.mesActual]} ${reservasState.añoActual}`;
-
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('mes-actual-reservas').textContent = `${meses[reservasState.mesActual]} ${reservasState.añoActual}`;
             let html = '';
-            
             let diaSemana = primerDia.getDay() === 0 ? 6 : primerDia.getDay() - 1;
-            for (let i = 0; i < diaSemana; i++) {
-                html += '<div class="calendario-vacio"></div>';
-            }
-
-            const hoy = new Date();
-            hoy.setHours(0,0,0,0);
-
+            for (let i = 0; i < diaSemana; i++) html += '<div class="calendario-vacio"></div>';
+            const hoy = new Date(); hoy.setHours(0,0,0,0);
             for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
                 const fecha = new Date(reservasState.añoActual, reservasState.mesActual, dia);
                 const fechaStr = fecha.toISOString().split('T')[0];
-                
                 let clases = 'calendario-dia';
-                
-                if (fecha < hoy) {
-                    clases += ' pasado';
-                } else if (reservasState.disponibilidad[fechaStr]) {
-                    clases += ' disponible';
-                } else {
-                    clases += ' ocupado';
-                }
-                
+                if (fecha < hoy) clases += ' pasado';
+                else if (reservasState.disponibilidad[fechaStr]) clases += ' disponible';
+                else clases += ' ocupado';
                 if ((reservasState.fechaInicio && fechaStr === reservasState.fechaInicio) || 
                     (reservasState.fechaFin && fechaStr === reservasState.fechaFin) ||
-                    (reservasState.fechaInicio && reservasState.fechaFin && 
-                     fechaStr > reservasState.fechaInicio && fechaStr < reservasState.fechaFin)) {
-                    clases += ' seleccionado';
-                }
-
+                    (reservasState.fechaInicio && reservasState.fechaFin && fechaStr > reservasState.fechaInicio && fechaStr < reservasState.fechaFin)) clases += ' seleccionado';
                 html += `<div class="${clases}" onclick="seleccionarFecha('${fechaStr}')">${dia}</div>`;
             }
-
             document.getElementById('calendario-grid-reservas').innerHTML = html;
         }
 
         function renderizarHabitacionesReservas(habitaciones) {
             const container = document.getElementById('habitaciones-reservas-container');
             if (!container || !habitaciones) return;
-            
-            container.innerHTML = habitaciones.map(h => `
-                <div class="habitacion-card-reserva" onclick="seleccionarHabitacionReserva(${h.id})" data-id="${h.id}">
-                    <h4>${h.nombre}</h4>
-                    <div class="precio">$${h.precio} <small>/ noche</small></div>
-                </div>
-            `).join('');
+            container.innerHTML = habitaciones.map(h => `<div class="habitacion-card-reserva" onclick="seleccionarHabitacionReserva(${h.id})" data-id="${h.id}"><h4>${h.nombre}</h4><div class="precio">$${h.precio} <small>/ noche</small></div></div>`).join('');
         }
-
         function renderizarExperienciasReservas(experiencias) {
             const container = document.getElementById('experiencias-reserva-container');
             if (!container || !experiencias) return;
-            
-            container.innerHTML = experiencias.map(exp => `
-                <div class="experiencia-card-reserva" onclick="seleccionarExperienciaReserva(${exp.id})" data-id="${exp.id}">
-                    <div class="experiencia-info">
-                        <h4>${exp.nombre}</h4>
-                        <p>${exp.duracion || ''}</p>
-                    </div>
-                    <div class="experiencia-precio-card">$${exp.precio}</div>
-                </div>
-            `).join('');
+            container.innerHTML = experiencias.map(exp => `<div class="experiencia-card-reserva" onclick="seleccionarExperienciaReserva(${exp.id})" data-id="${exp.id}"><div class="experiencia-info"><h4>${exp.nombre}</h4><p>${exp.duracion || ''}</p></div><div class="experiencia-precio-card">$${exp.precio}</div></div>`).join('');
         }
 
         function seleccionarFecha(fechaStr) {
-            const fecha = new Date(fechaStr);
-            const hoy = new Date();
-            hoy.setHours(0,0,0,0);
-            
+            const fecha = new Date(fechaStr), hoy = new Date(); hoy.setHours(0,0,0,0);
             if (fecha < hoy) return;
-            if (!reservasState.disponibilidad[fechaStr]) {
-                alert('Esta fecha no está disponible');
-                return;
-            }
-
+            if (!reservasState.disponibilidad[fechaStr]) return alert('Esta fecha no está disponible');
             if (!reservasState.fechaInicio || (reservasState.fechaInicio && reservasState.fechaFin)) {
                 reservasState.fechaInicio = fechaStr;
                 reservasState.fechaFin = null;
             } else if (reservasState.fechaInicio && !reservasState.fechaFin) {
-                if (new Date(fechaStr) > new Date(reservasState.fechaInicio)) {
-                    reservasState.fechaFin = fechaStr;
-                } else {
-                    reservasState.fechaInicio = fechaStr;
-                }
+                if (new Date(fechaStr) > new Date(reservasState.fechaInicio)) reservasState.fechaFin = fechaStr;
+                else reservasState.fechaInicio = fechaStr;
             }
-
             renderizarCalendario();
             actualizarResumenReservas();
         }
-
         function seleccionarHabitacionReserva(id) {
             reservasState.habitacionSeleccionada = id;
-            
-            document.querySelectorAll('.habitacion-card-reserva').forEach(card => {
-                card.classList.remove('seleccionada');
-                if (card.dataset.id == id) {
-                    card.classList.add('seleccionada');
-                }
-            });
-            
+            document.querySelectorAll('.habitacion-card-reserva').forEach(card => { card.classList.remove('seleccionada'); if (card.dataset.id == id) card.classList.add('seleccionada'); });
             actualizarResumenReservas();
         }
-
         function seleccionarExperienciaReserva(id) {
             const experiencias = window.experienciasData || [];
             const experiencia = experiencias.find(e => e.id === id);
             reservasState.experienciaSeleccionada = experiencia;
-            
-            document.querySelectorAll('.experiencia-card-reserva').forEach(card => {
-                card.classList.remove('seleccionada');
-                if (card.dataset.id == id) {
-                    card.classList.add('seleccionada');
-                }
-            });
-            
+            document.querySelectorAll('.experiencia-card-reserva').forEach(card => { card.classList.remove('seleccionada'); if (card.dataset.id == id) card.classList.add('seleccionada'); });
             if (experiencia) {
                 document.getElementById('experiencia-seleccionada-info').style.display = 'block';
                 document.getElementById('exp-seleccionada-nombre').textContent = experiencia.nombre;
                 document.getElementById('exp-seleccionada-desc').textContent = experiencia.descripcion || '';
                 document.getElementById('exp-seleccionada-precio').textContent = `$${experiencia.precio} por persona`;
             }
-            
             actualizarResumenReservas();
         }
-
         function cambiarTabReserva(tab) {
             reservasState.tabActivo = tab;
-            
             document.getElementById('tab-habitacion').classList.toggle('active', tab === 'habitacion');
             document.getElementById('tab-experiencia').classList.toggle('active', tab === 'experiencia');
             document.getElementById('tab-habitacion-content').classList.toggle('active', tab === 'habitacion');
             document.getElementById('tab-experiencia-content').classList.toggle('active', tab === 'experiencia');
-            
             document.getElementById('resumen-habitacion').style.display = tab === 'habitacion' ? 'block' : 'none';
             document.getElementById('resumen-experiencia').style.display = tab === 'experiencia' ? 'block' : 'none';
-            
             actualizarResumenReservas();
         }
-
         function cambiarMesReservas(direccion) {
             reservasState.mesActual += direccion;
-            if (reservasState.mesActual < 0) {
-                reservasState.mesActual = 11;
-                reservasState.añoActual--;
-            } else if (reservasState.mesActual > 11) {
-                reservasState.mesActual = 0;
-                reservasState.añoActual++;
-            }
+            if (reservasState.mesActual < 0) { reservasState.mesActual = 11; reservasState.añoActual--; }
+            else if (reservasState.mesActual > 11) { reservasState.mesActual = 0; reservasState.añoActual++; }
             renderizarCalendario();
         }
-
         function actualizarResumenReservas() {
             if (reservasState.tabActivo === 'habitacion') {
                 if (reservasState.fechaInicio && reservasState.fechaFin && reservasState.habitacionSeleccionada) {
                     const habitaciones = window.habitacionesData || [];
                     const habitacion = habitaciones.find(h => h.id === reservasState.habitacionSeleccionada);
-                    const inicio = new Date(reservasState.fechaInicio);
-                    const fin = new Date(reservasState.fechaFin);
-                    const noches = Math.round((fin - inicio) / (1000 * 60 * 60 * 24));
+                    const inicio = new Date(reservasState.fechaInicio), fin = new Date(reservasState.fechaFin);
+                    const noches = Math.round((fin - inicio) / (86400000));
                     const total = (habitacion?.precio || 0) * noches;
-
-                    document.getElementById('reservas-fecha-entrada').textContent = new Date(reservasState.fechaInicio).toLocaleDateString('es', { day: '2-digit', month: 'short' });
-                    document.getElementById('reservas-fecha-salida').textContent = new Date(reservasState.fechaFin).toLocaleDateString('es', { day: '2-digit', month: 'short' });
+                    document.getElementById('reservas-fecha-entrada').textContent = new Date(reservasState.fechaInicio).toLocaleDateString('es', { day:'2-digit', month:'short' });
+                    document.getElementById('reservas-fecha-salida').textContent = new Date(reservasState.fechaFin).toLocaleDateString('es', { day:'2-digit', month:'short' });
                     document.getElementById('reservas-total-noches').textContent = noches;
                     document.getElementById('reservas-habitacion-seleccionada').textContent = habitacion?.nombre || '—';
                     document.getElementById('reservas-precio-total').textContent = `$${total}`;
                 }
             } else {
-                const exp = reservasState.experienciaSeleccionada;
-                const fecha = document.getElementById('exp-fecha')?.value;
-                const hora = document.getElementById('exp-hora')?.value;
-                const personas = document.getElementById('exp-personas')?.value;
-                
+                const exp = reservasState.experienciaSeleccionada, fecha = document.getElementById('exp-fecha')?.value, hora = document.getElementById('exp-hora')?.value, personas = document.getElementById('exp-personas')?.value;
                 if (exp && fecha && personas) {
                     const total = exp.precio * parseInt(personas);
-                    
                     document.getElementById('resumen-exp-nombre').textContent = exp.nombre;
                     document.getElementById('resumen-exp-fecha').textContent = new Date(fecha).toLocaleDateString('es');
                     document.getElementById('resumen-exp-hora').textContent = hora;
@@ -2515,167 +2242,87 @@
                     document.getElementById('resumen-exp-total').textContent = `$${total}`;
                 }
             }
-            
             validarFormularioReservas();
         }
-
         function validarFormularioReservas() {
             const nombre = document.getElementById('reservas-nombre')?.value.trim() || '';
             const email = document.getElementById('reservas-email')?.value.trim() || '';
             const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            
             let isValid = true;
-            
-            if (!nombre) {
-                document.getElementById('error-nombre').textContent = 'El nombre es obligatorio';
-                document.getElementById('reservas-nombre')?.classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('error-nombre').textContent = '';
-                document.getElementById('reservas-nombre')?.classList.remove('error');
-            }
-            
-            if (!email) {
-                document.getElementById('error-email').textContent = 'El email es obligatorio';
-                document.getElementById('reservas-email')?.classList.add('error');
-                isValid = false;
-            } else if (!emailRegex.test(email)) {
-                document.getElementById('error-email').textContent = 'Email no válido';
-                document.getElementById('reservas-email')?.classList.add('error');
-                isValid = false;
-            } else {
-                document.getElementById('error-email').textContent = '';
-                document.getElementById('reservas-email')?.classList.remove('error');
-            }
-            
-            if (reservasState.tabActivo === 'habitacion') {
-                if (!reservasState.fechaInicio || !reservasState.fechaFin || !reservasState.habitacionSeleccionada) {
-                    isValid = false;
-                }
-            } else {
-                if (!reservasState.experienciaSeleccionada || !document.getElementById('exp-fecha')?.value) {
-                    isValid = false;
-                }
-            }
-            
+            if (!nombre) { document.getElementById('error-nombre').textContent = 'El nombre es obligatorio'; document.getElementById('reservas-nombre')?.classList.add('error'); isValid = false; }
+            else { document.getElementById('error-nombre').textContent = ''; document.getElementById('reservas-nombre')?.classList.remove('error'); }
+            if (!email) { document.getElementById('error-email').textContent = 'El email es obligatorio'; document.getElementById('reservas-email')?.classList.add('error'); isValid = false; }
+            else if (!emailRegex.test(email)) { document.getElementById('error-email').textContent = 'Email no válido'; document.getElementById('reservas-email')?.classList.add('error'); isValid = false; }
+            else { document.getElementById('error-email').textContent = ''; document.getElementById('reservas-email')?.classList.remove('error'); }
+            if (reservasState.tabActivo === 'habitacion') { if (!reservasState.fechaInicio || !reservasState.fechaFin || !reservasState.habitacionSeleccionada) isValid = false; }
+            else { if (!reservasState.experienciaSeleccionada || !document.getElementById('exp-fecha')?.value) isValid = false; }
             document.getElementById('btn-reservar-final').disabled = !isValid;
             return isValid;
         }
 
         let metodoPagoSeleccionado = null;
-
         function seleccionarPago(metodo, elemento) {
             metodoPagoSeleccionado = metodo;
-            
-            document.querySelectorAll('.btn-pago').forEach(btn => {
-                btn.classList.remove('seleccionado');
-            });
+            document.querySelectorAll('.btn-pago').forEach(btn => btn.classList.remove('seleccionado'));
             elemento.classList.add('seleccionado');
-            
             let mensaje = '';
             switch(metodo) {
-                case 'paypal':
-                    mensaje = '✅ Redirigiendo a PayPal para completar el pago.';
-                    break;
-                case 'stripe':
-                    mensaje = '💳 Procesando pago con Stripe (tarjeta de crédito/débito).';
-                    break;
-                case 'tarjeta':
-                    mensaje = '💳 Abriendo formulario de pago con tarjeta.';
-                    break;
-                case 'transferencia':
-                    mensaje = '🏦 Recibirás los datos bancarios para realizar la transferencia.';
-                    break;
+                case 'paypal': mensaje = '✅ Redirigiendo a PayPal para completar el pago.'; break;
+                case 'stripe': mensaje = '💳 Procesando pago con Stripe (tarjeta de crédito/débito).'; break;
+                case 'tarjeta': mensaje = '💳 Abriendo formulario de pago con tarjeta.'; break;
+                case 'transferencia': mensaje = '🏦 Recibirás los datos bancarios para realizar la transferencia.'; break;
             }
             document.getElementById('metodo-seleccionado').textContent = mensaje;
-            
-            if (validarFormularioReservas()) {
-                document.getElementById('btn-reservar-final').disabled = false;
-            }
+            if (validarFormularioReservas()) document.getElementById('btn-reservar-final').disabled = false;
         }
-
         function procesarReservaConPago() {
             if (!validarFormularioReservas()) return;
-            
-            if (!metodoPagoSeleccionado) {
-                alert('⚠️ Por favor, selecciona un método de pago antes de reservar.');
-                return;
-            }
-            
+            if (!metodoPagoSeleccionado) return alert('⚠️ Por favor, selecciona un método de pago antes de reservar.');
             const nombre = document.getElementById('reservas-nombre').value;
             const email = document.getElementById('reservas-email').value;
-            
             let mensajePago = '';
             switch(metodoPagoSeleccionado) {
-                case 'paypal':
-                    mensajePago = '🔴 Simulación: Redirigiendo a PayPal...\n(Pago real se activará en producción)';
-                    break;
-                case 'stripe':
-                    mensajePago = '🔴 Simulación: Procesando con Stripe...\n(Pago real se activará en producción)';
-                    break;
-                case 'tarjeta':
-                    mensajePago = '🔴 Simulación: Formulario de tarjeta...\n(Pago real se activará en producción)';
-                    break;
-                case 'transferencia':
-                    mensajePago = '🔴 Simulación: Datos bancarios enviados a tu correo.\n(Pago real se activará en producción)';
-                    break;
+                case 'paypal': mensajePago = '🔴 Simulación: Redirigiendo a PayPal...\n(Pago real se activará en producción)'; break;
+                case 'stripe': mensajePago = '🔴 Simulación: Procesando con Stripe...\n(Pago real se activará en producción)'; break;
+                case 'tarjeta': mensajePago = '🔴 Simulación: Formulario de tarjeta...\n(Pago real se activará en producción)'; break;
+                case 'transferencia': mensajePago = '🔴 Simulación: Datos bancarios enviados a tu correo.\n(Pago real se activará en producción)'; break;
             }
-            
             if (reservasState.tabActivo === 'habitacion') {
-                const habitaciones = window.habitacionesData || [];
-                const habitacion = habitaciones.find(h => h.id === reservasState.habitacionSeleccionada);
+                const habitaciones = window.habitacionesData || [], habitacion = habitaciones.find(h => h.id === reservasState.habitacionSeleccionada);
                 const total = document.getElementById('reservas-precio-total').textContent;
                 alert(`✅ Reserva de habitación simulada\n\nCliente: ${nombre}\nEmail: ${email}\nHabitación: ${habitacion?.nombre}\nTotal: ${total}\n\n${mensajePago}`);
             } else {
-                const exp = reservasState.experienciaSeleccionada;
-                const fecha = document.getElementById('exp-fecha').value;
-                const hora = document.getElementById('exp-hora').value;
-                const personas = document.getElementById('exp-personas').value;
+                const exp = reservasState.experienciaSeleccionada, fecha = document.getElementById('exp-fecha').value, hora = document.getElementById('exp-hora').value, personas = document.getElementById('exp-personas').value;
                 const total = exp.precio * parseInt(personas);
                 alert(`✅ Reserva de experiencia simulada\n\nCliente: ${nombre}\nEmail: ${email}\nExperiencia: ${exp.nombre}\nFecha: ${fecha} ${hora}\nPersonas: ${personas}\nTotal: $${total}\n\n${mensajePago}`);
             }
         }
-
         function initReservas(datosReservas) {
             if (!datosReservas) return;
-            
-            if (datosReservas.titulo) {
-                document.getElementById('reservas-titulo').textContent = datosReservas.titulo;
-            }
-            if (datosReservas.subtitulo) {
-                document.getElementById('reservas-subtitulo').textContent = datosReservas.subtitulo;
-            }
-            
+            if (datosReservas.titulo) document.getElementById('reservas-titulo').textContent = datosReservas.titulo;
+            if (datosReservas.subtitulo) document.getElementById('reservas-subtitulo').textContent = datosReservas.subtitulo;
             window.habitacionesData = window.habitacionesData || [];
             window.experienciasData = window.experienciasData || [];
-            
             renderizarHabitacionesReservas(window.habitacionesData);
             renderizarExperienciasReservas(window.experienciasData);
-            
             const hoy = new Date().toISOString().split('T')[0];
             const expFecha = document.getElementById('exp-fecha');
             if (expFecha) expFecha.min = hoy;
-            
             renderizarCalendario();
         }
 
         // ============================================
-        // CARGA DE DATOS (DESDE JSON Y SUPABASE)
+        // CARGA DE DATOS (TODO DESDE JSON)
         // ============================================
         async function cargarDatos() {
             try {
-                // Cargar JSON para datos estáticos (hero, nosotros, testimonios, galería, contacto)
                 const respuesta = await fetch('datos-cliente.json');
-                
                 if (!respuesta.ok) {
                     console.log('⚠️ No se encontró datos-cliente.json');
                     return;
                 }
-                
                 const datos = await respuesta.json();
                 console.log('✅ JSON cargado');
-                
-                // Aplicar colores
                 if (datos.marca?.colores) {
                     const c = datos.marca.colores;
                     if (c.primario) document.documentElement.style.setProperty('--color-primario', c.primario);
@@ -2684,67 +2331,26 @@
                     if (c.texto) document.documentElement.style.setProperty('--color-texto', c.texto);
                     if (c.fondo) document.documentElement.style.setProperty('--color-fondo', c.fondo);
                 }
-                
-                // Aplicar logo
-                if (datos.marca?.logo) {
-                    document.getElementById('logo').textContent = datos.marca.logo;
+                if (datos.marca?.logo) document.getElementById('logo').textContent = datos.marca.logo;
+                if (datos.footer?.texto) document.getElementById('footer-texto').textContent = datos.footer.texto;
+                if (datos.marca?.nombre) document.getElementById('page-title').textContent = datos.marca.nombre;
+                if (datos.hero) initHero(datos.hero);
+                if (datos.habitaciones?.lista) {
+                    if (datos.habitaciones.titulo) document.getElementById('hab-titulo').textContent = datos.habitaciones.titulo;
+                    if (datos.habitaciones.subtitulo) document.getElementById('hab-subtitulo').textContent = datos.habitaciones.subtitulo;
+                    initHabitaciones(datos.habitaciones.lista);
                 }
-                
-                // Aplicar footer
-                if (datos.footer?.texto) {
-                    document.getElementById('footer-texto').textContent = datos.footer.texto;
-                }
-                
-                // Aplicar título
-                if (datos.marca?.nombre) {
-                    document.getElementById('page-title').textContent = datos.marca.nombre;
-                }
-                
-                // Inicializar hero
-                if (datos.hero) {
-                    initHero(datos.hero);
-                }
-                
-                // Inicializar sobre nosotros (desde JSON)
-                if (datos.nosotros) {
-                    initNosotros(datos.nosotros);
-                }
-                
-                // Inicializar testimonios (desde JSON)
-                if (datos.testimonios) {
-                    initTestimonios(datos.testimonios);
-                }
-                
-                // Inicializar galería (desde JSON)
-                if (datos.galeria) {
-                    initGaleria(datos.galeria);
-                }
-                
-                // Inicializar contacto (desde JSON)
-                if (datos.contacto) {
-                    initContacto(datos.contacto);
-                }
-                
-                // Inicializar reservas (desde JSON)
-                if (datos.reservas) {
-                    initReservas(datos.reservas);
-                }
-                
-                // Cargar datos desde Supabase (habitaciones, experiencias, servicios)
-                await initHabitacionesDesdeDB();
-                await initExperienciasDesdeDB();
-                await initServiciosDesdeDB();
-                
-                console.log('✅ Todos los datos cargados');
-                
+                if (datos.experiencias) initExperiencias(datos.experiencias);
+                if (datos.servicios) initServicios(datos.servicios);
+                if (datos.nosotros) initNosotros(datos.nosotros);
+                if (datos.testimonios) initTestimonios(datos.testimonios);
+                if (datos.galeria) initGaleria(datos.galeria);
+                if (datos.contacto) initContacto(datos.contacto);
+                if (datos.reservas) initReservas(datos.reservas);
             } catch (error) {
                 console.log('❌ Error:', error.message);
             }
         }
-
-        // ============================================
-        // EJECUTAR
-        // ============================================
         cargarDatos();
     </script>
 </body>
