@@ -1,0 +1,270 @@
+{
+    "marca": {
+        "nombre": "Casa Palmeras",
+        "logo": "🌴 Casa Palmeras",
+        "colores": {
+            "primario": "#0B4F6C",
+            "secundario": "#F18F01",
+            "acento": "#2EC4B6",
+            "texto": "#2D3047",
+            "fondo": "#F7F7F2"
+        }
+    },
+    "hero": {
+        "texto_superior": "BIENVENIDOS A",
+        "texto_principal": "Casa Palmeras",
+        "texto_inferior": "TU PARAISO TROPICAL",
+        "boton": "Ver habitaciones",
+        "imagen": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1600",
+        "overlay": 0.4
+    },
+    "habitaciones": {
+        "titulo": "Nuestras Habitaciones",
+        "subtitulo": "Espacios diseñados para tu descanso con vista al mar",
+        "lista": [
+            {
+                "id": 1,
+                "nombre": "Habitación Deluxe",
+                "descripcion": "Amplia habitación con vista parcial al mar, cama king size y terraza privada.",
+                "precio": 150,
+                "imagen": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+                "caracteristicas": ["<i class='fas fa-water'></i> Vista al mar", "<i class='fas fa-bed'></i> King size", "<i class='fas fa-hot-tub'></i> Jacuzzi"],
+                "badgePermanente": "<i class='fas fa-water'></i> Vista al mar",
+                "badgeTipo": "vista",
+                "disponibles": 5,
+                "reservas": 128,
+                "rating": 4.8,
+                "promocion": null
+            },
+            {
+                "id": 2,
+                "nombre": "Suite Presidencial",
+                "descripcion": "Nuestra suite más exclusiva con terraza frente al mar, sala independiente y servicio mayordomo.",
+                "precio": 350,
+                "imagen": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600",
+                "caracteristicas": ["<i class='fas fa-umbrella-beach'></i> Frente al mar", "<i class='fas fa-crown'></i> Sala privada", "<i class='fas fa-champagne-glasses'></i> Bienvenida"],
+                "badgePermanente": "<i class='fas fa-crown'></i> Exclusiva",
+                "badgeTipo": "exclusiva",
+                "disponibles": 2,
+                "reservas": 89,
+                "rating": 5.0,
+                "promocion": "15% OFF"
+            },
+            {
+                "id": 3,
+                "nombre": "Habitación Estándar",
+                "descripcion": "Cómoda habitación con todas las comodidades necesarias para una estancia perfecta.",
+                "precio": 90,
+                "imagen": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600",
+                "caracteristicas": ["<i class='fas fa-bed'></i> Queen size", "<i class='fas fa-tv'></i> TV LED", "<i class='fas fa-tree'></i> Jardín"],
+                "badgePermanente": "<i class='fas fa-coins'></i> Económica",
+                "badgeTipo": "economica",
+                "disponibles": 8,
+                "reservas": 45,
+                "rating": 4.5,
+                "promocion": null
+            },
+            {
+                "id": 4,
+                "nombre": "Bungalow Familiar",
+                "descripcion": "Amplio bungalow con 2 habitaciones, cocina equipada y terraza con barbacoa.",
+                "precio": 280,
+                "imagen": "https://images.unsplash.com/photo-1637619378396-979cd80f8b8f?w=600",
+                "caracteristicas": ["<i class='fas fa-home'></i> 2 habitaciones", "<i class='fas fa-utensils'></i> Cocina", "<i class='fas fa-fire'></i> Barbacoa"],
+                "badgePermanente": "<i class='fas fa-users'></i> Familiar",
+                "badgeTipo": "popular",
+                "disponibles": 3,
+                "reservas": 67,
+                "rating": 4.7,
+                "promocion": null
+            }
+        ]
+    },
+    "experiencias": {
+        "titulo": "Experiencias Únicas",
+        "subtitulo": "Vive el Caribe más allá de tu habitación",
+        "lista": [
+            {
+                "id": 1,
+                "nombre": "Atardecer en Catamarán",
+                "descripcion": "Navega por aguas cristalinas mientras el sol pinta el cielo de colores.",
+                "precio": 89,
+                "imagen": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=600",
+                "duracion": "4 horas",
+                "incluye": ["<i class='fas fa-wine-bottle'></i> Open bar", "<i class='fas fa-utensils'></i> Snacks", "<i class='fas fa-camera'></i> Fotos"]
+            },
+            {
+                "id": 2,
+                "nombre": "Buceo en Arrecife",
+                "descripcion": "Explora el segundo arrecife más grande del caribe.",
+                "precio": 75,
+                "imagen": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600",
+                "duracion": "3 horas",
+                "incluye": ["<i class='fas fa-diving-mask'></i> Equipo completo", "<i class='fas fa-chalkboard-user'></i> Guía", "<i class='fas fa-camera'></i> Fotos"]
+            }
+        ]
+    },
+    "servicios": {
+        "titulo": "Servicios e Instalaciones",
+        "subtitulo": "Todo lo que necesitas para unas vacaciones perfectas",
+        "lista": [
+            {
+                "nombre": "Piscina Infinity",
+                "descripcion": "Disfruta de nuestra piscina con vista al mar y servicio de bar",
+                "icono": "<i class='fas fa-swimming-pool'></i>",
+                "horario": "8:00 - 20:00"
+            },
+            {
+                "nombre": "Spa & Bienestar",
+                "descripcion": "Masajes, tratamientos faciales y circuito de aguas",
+                "icono": "<i class='fas fa-spa'></i>",
+                "horario": "10:00 - 20:00"
+            },
+            {
+                "nombre": "Gimnasio",
+                "descripcion": "Equipamiento de última generación con vista al mar",
+                "icono": "<i class='fas fa-dumbbell'></i>",
+                "horario": "24 horas"
+            },
+            {
+                "nombre": "Restaurante",
+                "descripcion": "Gastronomía local e internacional con productos frescos",
+                "icono": "<i class='fas fa-utensils'></i>",
+                "horario": "7:00 - 23:00"
+            },
+            {
+                "nombre": "Bar en la Playa",
+                "descripcion": "Cócteles y snacks directamente en la arena",
+                "icono": "<i class='fas fa-cocktail'></i>",
+                "horario": "11:00 - 19:00"
+            },
+            {
+                "nombre": "WiFi Gratuito",
+                "descripcion": "Conexión de alta velocidad en todo el hotel",
+                "icono": "<i class='fas fa-wifi'></i>",
+                "horario": "24 horas"
+            }
+        ]
+    },
+    "nosotros": {
+        "titulo": "Sobre Nosotros",
+        "subtitulo": "Más de 20 años creando experiencias inolvidables",
+        "imagen": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800",
+        "historia": "Casa Palmeras nació en 2003 del sueño de una familia local por compartir la belleza del Caribe con el mundo. Lo que comenzó como una pequeña posada de 5 habitaciones, hoy es un hotel boutique de 40 habitaciones que mantiene la calidez y el trato familiar que nos caracteriza. Nuestra filosofía se basa en la sostenibilidad, el respeto por la cultura local y la búsqueda constante de la excelencia para que cada huésped se sienta como en casa.",
+        "valores": [
+            {
+                "icono": "<i class='fas fa-leaf'></i>",
+                "texto": "Sostenibilidad"
+            },
+            {
+                "icono": "<i class='fas fa-handshake'></i>",
+                "texto": "Trato familiar"
+            },
+            {
+                "icono": "<i class='fas fa-star'></i>",
+                "texto": "Excelencia"
+            },
+            {
+                "icono": "<i class='fas fa-water'></i>",
+                "texto": "Pasión por el mar"
+            }
+        ]
+    },
+    "testimonios": {
+        "titulo": "Lo que dicen nuestros huéspedes",
+        "subtitulo": "Experiencias reales de quienes ya vivieron el Caribe",
+        "lista": [
+            {
+                "nombre": "María González",
+                "lugar": "Madrid, España",
+                "texto": "Una experiencia inolvidable. Las habitaciones son increíbles, el personal súper atento y la comida del restaurante espectacular. Sin duda volveremos.",
+                "rating": 5,
+                "avatar": "https://randomuser.me/api/portraits/women/44.jpg"
+            },
+            {
+                "nombre": "Carlos Rodríguez",
+                "lugar": "Buenos Aires, Argentina",
+                "texto": "El lugar perfecto para desconectar. La piscina infinity es una maravilla y el atardecer desde el bar de la playa no tiene precio. Muy recomendable.",
+                "rating": 5,
+                "avatar": "https://randomuser.me/api/portraits/men/32.jpg"
+            },
+            {
+                "nombre": "Ana López",
+                "lugar": "Barcelona, España",
+                "texto": "Fuimos en familia y todos quedamos encantados. Los niños disfrutaron muchísimo y nosotros pudimos relajarnos en el spa. Repetiremos seguro.",
+                "rating": 4,
+                "avatar": "https://randomuser.me/api/portraits/women/63.jpg"
+            }
+        ]
+    },
+    "galeria": {
+        "titulo": "Galería de Fotos",
+        "subtitulo": "Momentos inolvidables en Casa Palmeras",
+        "items": [
+            {
+                "titulo": "Piscina Infinity",
+                "descripcion": "Disfruta de nuestra piscina con vista al mar",
+                "categoria": "piscina",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600",
+                    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+                    "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600",
+                    "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600"
+                ]
+            },
+            {
+                "titulo": "Habitaciones de Lujo",
+                "descripcion": "Espacios diseñados para tu confort",
+                "categoria": "habitaciones",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+                    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600",
+                    "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600",
+                    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600"
+                ]
+            },
+            {
+                "titulo": "Restaurante El Mirador",
+                "descripcion": "Gastronomía con vista al mar",
+                "categoria": "restaurante",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600",
+                    "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600",
+                    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600",
+                    "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600"
+                ]
+            },
+            {
+                "titulo": "Spa Caribeño",
+                "descripcion": "Relajación y bienestar",
+                "categoria": "spa",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600",
+                    "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=600",
+                    "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600",
+                    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600"
+                ]
+            }
+        ]
+    },
+    "contacto": {
+        "titulo": "¿Listo para vivir el Caribe?",
+        "subtitulo": "Reserva ahora o consultanos cualquier duda",
+        "direccion": "Playa Escondida, Calle del Mar #45, St. John's, Antigua",
+        "telefono": "+1 268 123 4567",
+        "email": "reservas@casapalmeras.com",
+        "mapa": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30823.727456402!2d-61.848571!3d17.117963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c13f1a123456789%3A0x123456789abcdef!2sSt.John's%2C%20Antigua%20y%20Barbuda!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses",
+        "redes": [
+            { "nombre": "Facebook", "url": "#", "icono": "<i class='fab fa-facebook-f'></i>" },
+            { "nombre": "Instagram", "url": "#", "icono": "<i class='fab fa-instagram'></i>" },
+            { "nombre": "Twitter", "url": "#", "icono": "<i class='fab fa-twitter'></i>" }
+        ]
+    },
+    "reservas": {
+        "titulo": "Reserva tu estancia",
+        "subtitulo": "Selecciona fechas y completa tus datos"
+    },
+    "footer": {
+        "texto": "© 2025 Casa Palmeras"
+    }
+}
