@@ -1,0 +1,2589 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Cargando...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <style>
+        /* ===== VARIABLES NEUTRAS ===== */
+        :root {
+            --color-primario: #CCCCCC;
+            --color-secundario: #DDDDDD;
+            --color-acento: #EEEEEE;
+            --color-texto: #333333;
+            --color-fondo: #FFFFFF;
+            --color-blanco: #FFFFFF;
+            --container-max-width: 1200px;
+            --container-padding: 1rem;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            color: var(--color-texto);
+            background-color: var(--color-fondo);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: var(--container-max-width);
+            margin: 0 auto;
+            padding: 0 var(--container-padding);
+            width: 100%;
+        }
+
+        /* ===== HEADER Y MENÚ ===== */
+        .site-header {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .site-header .container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        .menu-toggle {
+            display: none;
+            font-size: 2rem;
+            cursor: pointer;
+            color: white;
+            margin-left: auto;
+        }
+
+        .main-nav ul {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .main-nav a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 0;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .main-nav a:hover {
+            color: var(--color-secundario);
+            border-bottom-color: var(--color-secundario);
+        }
+
+        .main-nav a.activo {
+            color: var(--color-secundario);
+            border-bottom-color: var(--color-secundario);
+            font-weight: bold;
+        }
+
+        @media (max-width: 992px) {
+            .menu-toggle {
+                display: block;
+            }
+
+            .main-nav ul {
+                display: none;
+                position: absolute;
+                top: 100%;
+                right: 0;
+                left: auto;
+                min-width: 280px;
+                background-color: var(--color-primario);
+                flex-direction: column;
+                padding: 1rem;
+                gap: 0.5rem;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+                border-radius: 8px;
+                z-index: 1000;
+            }
+
+            .main-nav ul.active {
+                display: flex;
+            }
+
+            .main-nav li {
+                width: 100%;
+            }
+
+            .main-nav a {
+                display: block;
+                padding: 0.5rem 1rem;
+                border-bottom: none;
+            }
+
+            .main-nav a.activo {
+                background-color: rgba(255,255,255,0.2);
+                border-radius: 4px;
+            }
+        }
+
+        .site-footer {
+            background-color: var(--color-primario);
+            color: white;
+            padding: 2rem 0;
+            margin-top: 2rem;
+            text-align: center;
+        }
+
+        /* ===== SECCIONES ===== */
+        .seccion {
+            display: none;
+            padding: 4rem 0;
+        }
+
+        .seccion.activa {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        #inicio.seccion {
+            padding: 0;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--color-primario);
+            margin-bottom: 0.5rem;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--color-secundario);
+            border-radius: 3px;
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--color-texto);
+            opacity: 0.8;
+            margin-bottom: 3rem;
+            font-size: 1.1rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            width: 100%;
+            height: calc(100vh - 73px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            padding: 20px;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero-superior {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero-principal {
+            font-size: 4rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: white;
+        }
+
+        .hero-inferior {
+            font-size: 1.2rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            color: white;
+        }
+
+        .hero-cta {
+            display: inline-block;
+            background-color: var(--color-secundario);
+            color: white;
+            padding: 1rem 2rem;
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: transform 0.3s, background-color 0.3s;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            background-color: var(--color-acento);
+            transform: translateY(-3px);
+        }
+
+        /* ===== HABITACIONES ===== */
+        .habitaciones-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .habitacion-card {
+            background: white;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .habitacion-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .habitacion-img {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .habitacion-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .habitacion-card:hover .habitacion-img img {
+            transform: scale(1.05);
+        }
+
+        .habitacion-badge {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .badge-popular { background: #FF6B6B; }
+        .badge-exclusiva { background: #9B59B6; }
+        .badge-economica { background: #4CAF50; }
+        .badge-vista { background: #0B4F6C; }
+        .badge-oferta { background: #F18F01; }
+
+        .habitacion-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .habitacion-content h3 {
+            color: var(--color-primario);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .habitacion-desc {
+            color: var(--color-texto);
+            margin-bottom: 1rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .habitacion-features {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .habitacion-features span {
+            background: #f0f0f0;
+            padding: 0.3rem 0.8rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+        }
+
+        .habitacion-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #f0f0f0;
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .precio {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-secundario);
+        }
+
+        .precio small {
+            font-size: 0.9rem;
+            font-weight: normal;
+            opacity: 0.7;
+        }
+
+        .btn-reservar {
+            background: var(--color-primario);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .btn-reservar:hover {
+            background: var(--color-acento);
+        }
+
+        /* Voltear imagen de la habitación ID 4 */
+        .habitacion-card[data-id="4"] .habitacion-img img {
+            transform: scaleX(-1);
+        }
+
+        .habitacion-card[data-id="4"]:hover .habitacion-img img {
+            transform: scaleX(-1) scale(1.05);
+        }
+
+        /* ===== EXPERIENCIAS ===== */
+        .experiencias-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .experiencia-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        .experiencia-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .experiencia-img {
+            position: relative;
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .experiencia-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .experiencia-card:hover .experiencia-img img {
+            transform: scale(1.05);
+        }
+
+        .experiencia-badge {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            padding: 0.5rem 1.2rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: white;
+            z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+
+        .badge-imperdible { background: #FF6B6B; }
+        .badge-nuevo { background: #4CAF50; }
+        .badge-oferta { background: #F18F01; }
+
+        .experiencia-content {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .experiencia-content h3 {
+            color: var(--color-primario);
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .experiencia-meta {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--color-texto);
+            opacity: 0.8;
+            flex-wrap: wrap;
+        }
+
+        .experiencia-desc {
+            color: var(--color-texto);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .experiencia-incluye {
+            margin-bottom: 1.5rem;
+        }
+
+        .experiencia-incluye h4 {
+            color: var(--color-primario);
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .incluye-items {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .incluye-items span {
+            background: var(--color-fondo);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--color-texto);
+        }
+
+        .experiencia-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--color-fondo);
+            padding-top: 1rem;
+            margin-top: auto;
+        }
+
+        .experiencia-precio {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--color-secundario);
+        }
+
+        .experiencia-precio small {
+            font-size: 0.9rem;
+            font-weight: normal;
+            opacity: 0.7;
+        }
+
+        .btn-experiencia {
+            background: var(--color-primario);
+            color: white;
+            padding: 0.6rem 1.5rem;
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: background 0.3s;
+            font-weight: 500;
+        }
+
+        .btn-experiencia:hover {
+            background: var(--color-acento);
+        }
+
+        /* ===== SERVICIOS ===== */
+        .servicios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .servicio-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            text-align: center;
+            border-bottom: 4px solid transparent;
+        }
+
+        .servicio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            border-bottom-color: var(--color-secundario);
+        }
+
+        .servicio-icono {
+            font-size: 3rem;
+            color: var(--color-secundario);
+            margin-bottom: 1rem;
+        }
+
+        .servicio-card h3 {
+            color: var(--color-primario);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .servicio-desc {
+            color: var(--color-texto);
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .servicio-horario {
+            display: inline-block;
+            background: var(--color-fondo);
+            padding: 0.4rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            color: var(--color-texto);
+            font-weight: 500;
+        }
+
+        /* ===== SOBRE NOSOTROS ===== */
+        .nosotros-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .nosotros-imagen {
+            width: 100%;
+            height: 400px;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        .nosotros-imagen img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .nosotros-imagen:hover img {
+            transform: scale(1.05);
+        }
+
+        .nosotros-contenido {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .nosotros-historia {
+            color: var(--color-texto);
+            line-height: 1.8;
+            font-size: 1.1rem;
+        }
+
+        .nosotros-valores {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .valor-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            background: var(--color-fondo);
+            padding: 0.8rem 1rem;
+            border-radius: 50px;
+            font-weight: 500;
+        }
+
+        .valor-icono {
+            font-size: 1.8rem;
+            width: 2rem;
+            text-align: center;
+            color: var(--color-secundario);
+        }
+
+        @media (max-width: 768px) {
+            .nosotros-valores {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* ===== TESTIMONIOS ===== */
+        .testimonios-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .testimonio-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .testimonio-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .testimonio-card::before {
+            content: '"';
+            position: absolute;
+            top: -10px;
+            left: 20px;
+            font-size: 5rem;
+            color: var(--color-secundario);
+            opacity: 0.3;
+            font-family: serif;
+        }
+
+        .testimonio-texto {
+            color: var(--color-texto);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 1.5rem;
+            font-style: italic;
+            position: relative;
+            z-index: 1;
+        }
+
+        .testimonio-autor {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            border-top: 1px solid var(--color-fondo);
+            padding-top: 1rem;
+        }
+
+        .testimonio-avatar {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--color-secundario);
+        }
+
+        .testimonio-info h4 {
+            color: var(--color-primario);
+            font-size: 1.1rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .testimonio-info p {
+            color: var(--color-texto);
+            font-size: 0.9rem;
+            opacity: 0.7;
+        }
+
+        .testimonio-rating {
+            color: #FFD700;
+            margin-top: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        /* ===== CONTACTO ===== */
+        .contacto-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+        }
+
+        .contacto-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .info-card {
+            background: var(--color-blanco, white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            border-left: 4px solid var(--color-secundario);
+        }
+
+        .info-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .info-card h3 {
+            color: var(--color-primario);
+            font-size: 1.2rem;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .info-card p {
+            color: var(--color-texto);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-card a {
+            color: var(--color-secundario);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .redes-sociales {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 0.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .red-social {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.3rem;
+            text-decoration: none;
+            color: var(--color-texto);
+            transition: transform 0.3s;
+        }
+
+        .red-social:hover {
+            transform: translateY(-3px);
+        }
+
+        .red-social i {
+            width: 50px;
+            height: 50px;
+            background: var(--color-fondo);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border: 2px solid var(--color-secundario);
+            transition: all 0.3s;
+        }
+
+        .red-social:hover i {
+            background: var(--color-secundario);
+            color: white;
+        }
+
+        .red-social .nombre {
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--color-primario);
+        }
+
+        .mapa-container {
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            height: 100%;
+            min-height: 400px;
+        }
+
+        .mapa-container iframe {
+            width: 100%;
+            height: 100%;
+            border: 0;
+        }
+
+        /* ===== RESERVAS ===== */
+        .reservas-tabs {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            justify-content: center;
+        }
+
+        .tab-btn {
+            padding: 1rem 2rem;
+            border: none;
+            background: var(--color-fondo);
+            color: var(--color-texto);
+            font-size: 1.1rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+
+        .tab-btn i {
+            margin-right: 0.5rem;
+        }
+
+        .tab-btn.active {
+            background: var(--color-primario);
+            color: white;
+            border-color: var(--color-secundario);
+        }
+
+        .tab-btn:hover {
+            background: var(--color-secundario);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .reservas-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .experiencia-reserva-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .calendario-section,
+        .habitaciones-section,
+        .experiencia-selector-section,
+        .experiencia-detalles-section,
+        .formulario-section {
+            background: var(--color-blanco);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .calendario-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .calendario-header button {
+            background: var(--color-primario);
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+
+        .calendario-header button:hover {
+            background: var(--color-secundario);
+            transform: scale(1.1);
+        }
+
+        .dias-semana {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: center;
+            font-weight: bold;
+            color: var(--color-primario);
+            margin-bottom: 0.5rem;
+        }
+
+        .calendario-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 3px;
+        }
+
+        .calendario-dia {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s;
+        }
+
+        .calendario-dia.disponible {
+            background: #E8F5E9;
+            border: 1px solid #4CAF50;
+        }
+
+        .calendario-dia.disponible:hover {
+            background: #4CAF50;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .calendario-dia.ocupado {
+            background: #FFEBEE;
+            border: 1px solid #F44336;
+            cursor: not-allowed;
+            opacity: 0.5;
+            text-decoration: line-through;
+        }
+
+        .calendario-dia.seleccionado {
+            background: var(--color-secundario);
+            color: white;
+            border: 2px solid var(--color-primario);
+            transform: scale(1.05);
+        }
+
+        .calendario-dia.pasado {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .calendario-vacio {
+            aspect-ratio: 1;
+        }
+
+        .info-calendario {
+            margin-top: 1rem;
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            font-size: 0.9rem;
+        }
+
+        #habitaciones-reservas-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .habitacion-card-reserva,
+        .experiencia-card-reserva {
+            border: 2px solid var(--color-fondo);
+            border-radius: 10px;
+            padding: 1rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .habitacion-card-reserva:hover,
+        .experiencia-card-reserva:hover {
+            border-color: var(--color-secundario);
+            background: rgba(241, 143, 1, 0.05);
+        }
+
+        .habitacion-card-reserva.seleccionada,
+        .experiencia-card-reserva.seleccionada {
+            border-color: var(--color-primario);
+            background: rgba(11, 79, 108, 0.05);
+        }
+
+        .habitacion-card-reserva h4,
+        .experiencia-info h4 {
+            color: var(--color-primario);
+            margin-bottom: 0.3rem;
+        }
+
+        .habitacion-card-reserva .precio {
+            color: var(--color-secundario);
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+
+        .experiencias-reserva-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1rem;
+            max-height: 400px;
+            overflow-y: auto;
+            padding-right: 0.5rem;
+        }
+
+        .experiencia-info p {
+            color: var(--color-texto);
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+
+        .experiencia-precio-card {
+            font-weight: bold;
+            color: var(--color-secundario);
+        }
+
+        .experiencia-seleccionada {
+            background: var(--color-fondo);
+            padding: 1.5rem;
+            border-radius: 10px;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--color-secundario);
+        }
+
+        .exp-precio {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: var(--color-secundario);
+            margin-top: 0.5rem;
+        }
+
+        .formulario-section {
+            margin-top: 2rem;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.3rem;
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--color-primario);
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.8rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--color-secundario);
+            box-shadow: 0 0 0 2px rgba(241, 143, 1, 0.1);
+        }
+
+        .form-group input.error {
+            border-color: #F44336;
+        }
+
+        .error-mensaje {
+            color: #F44336;
+            font-size: 0.8rem;
+            min-height: 1rem;
+        }
+
+        .resumen-reserva {
+            background: var(--color-fondo);
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+
+        .resumen-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+
+        .resumen-total {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: var(--color-secundario);
+            text-align: center;
+            padding: 1rem;
+            background: white;
+            border-radius: 8px;
+            margin-top: 1rem;
+        }
+
+        .btn-reservar-final {
+            width: 100%;
+            padding: 1.2rem;
+            background: var(--color-secundario);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-reservar-final:hover:not(:disabled) {
+            background: var(--color-primario);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-reservar-final:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* ===== MÉTODOS DE PAGO ===== */
+        .metodos-pago {
+            margin: 1.5rem 0;
+            padding: 1rem;
+            background: var(--color-fondo);
+            border-radius: 12px;
+        }
+
+        .metodos-pago h4 {
+            color: var(--color-primario);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .pago-opciones {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            justify-content: center;
+        }
+
+        .btn-pago {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.8rem 1.5rem;
+            background: white;
+            border: 2px solid var(--color-secundario);
+            border-radius: 50px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            color: var(--color-texto);
+        }
+
+        .btn-pago i {
+            font-size: 1.2rem;
+            color: var(--color-secundario);
+        }
+
+        .btn-pago:hover {
+            background: var(--color-secundario);
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .btn-pago:hover i {
+            color: white;
+        }
+
+        .btn-pago.seleccionado {
+            background: var(--color-secundario);
+            color: white;
+            border-color: var(--color-primario);
+        }
+
+        .btn-pago.seleccionado i {
+            color: white;
+        }
+
+        .metodo-info {
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            text-align: center;
+            color: var(--color-secundario);
+            font-weight: 500;
+        }
+
+        /* ===== GALERÍA ===== */
+        .galeria-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .galeria-item {
+            position: relative;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+
+        .galeria-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .galeria-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .galeria-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .galeria-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), rgba(0,0,0,0.4));
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .galeria-overlay h3 {
+            font-size: 1.2rem;
+            margin: 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+        }
+
+        .galeria-overlay p {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin: 0;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+        }
+
+        .btn-ver-mas {
+            background: var(--color-secundario);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            align-self: flex-start;
+            transition: all 0.3s;
+            margin-top: 0.3rem;
+            font-weight: 600;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-ver-mas:hover {
+            background: var(--color-acento);
+            transform: scale(1.05);
+        }
+
+        /* ===== MODAL GALERÍA ===== */
+        .modal-galeria {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.95);
+            animation: modalFadeIn 0.3s;
+        }
+
+        @keyframes modalFadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        .modal-contenido {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            height: 90%;
+            margin: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        #modal-imagen {
+            max-width: 100%;
+            max-height: 70vh;
+            object-fit: contain;
+            border-radius: 8px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.3);
+        }
+
+        .modal-info {
+            color: white;
+            text-align: center;
+            margin-top: 2rem;
+        }
+
+        .modal-info h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .modal-cerrar {
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            color: white;
+            font-size: 3rem;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 1001;
+            transition: color 0.3s;
+        }
+
+        .modal-cerrar:hover {
+            color: var(--color-secundario);
+        }
+
+        .modal-prev,
+        .modal-next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255,255,255,0.1);
+            color: white;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: background 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-prev {
+            left: 20px;
+        }
+
+        .modal-next {
+            right: 20px;
+        }
+
+        .modal-prev:hover,
+        .modal-next:hover {
+            background: var(--color-secundario);
+        }
+
+        @media (max-width: 992px) {
+            .contacto-grid,
+            .reservas-grid,
+            .experiencia-reserva-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .reservas-tabs {
+                flex-direction: column;
+            }
+            
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+
+            .galeria-grid,
+            .servicios-grid,
+            .testimonios-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-principal { font-size: 2.5rem; }
+            .hero-superior, .hero-inferior { font-size: 1rem; }
+            .habitaciones-grid,
+            .experiencias-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .galeria-grid,
+            .servicios-grid,
+            .testimonios-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .habitaciones-grid,
+            .experiencias-grid,
+            .galeria-grid,
+            .servicios-grid,
+            .testimonios-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="site-header">
+        <div class="container">
+            <div class="logo" id="logo"></div>
+            <div class="menu-toggle" id="menuToggle">☰</div>
+            <nav class="main-nav">
+                <ul id="mainMenu">
+                    <li><a class="menu-link" data-seccion="inicio">Inicio</a></li>
+                    <li><a class="menu-link" data-seccion="habitaciones">Habitaciones</a></li>
+                    <li><a class="menu-link" data-seccion="experiencias">Experiencias</a></li>
+                    <li><a class="menu-link" data-seccion="servicios">Servicios</a></li>
+                    <li><a class="menu-link" data-seccion="nosotros">Sobre Nosotros</a></li>
+                    <li><a class="menu-link" data-seccion="testimonios">Testimonios</a></li>
+                    <li><a class="menu-link" data-seccion="galeria">Galería</a></li>
+                    <li><a class="menu-link" data-seccion="reservar">Reservar</a></li>
+                    <li><a class="menu-link" data-seccion="contacto">Contacto</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <!-- ===== SECCIÓN HERO ===== -->
+        <section id="inicio" class="seccion activa">
+            <div class="hero" id="hero">
+                <div class="hero-content">
+                    <div class="hero-superior" id="hero-superior"></div>
+                    <div class="hero-principal" id="hero-principal"></div>
+                    <div class="hero-inferior" id="hero-inferior"></div>
+                    <a class="hero-cta" id="hero-boton" data-seccion="habitaciones">Ver habitaciones</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN HABITACIONES ===== -->
+        <section id="habitaciones" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="hab-titulo"></h2>
+                <p class="section-subtitle" id="hab-subtitulo"></p>
+                <div class="habitaciones-grid" id="habitaciones-grid"></div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN EXPERIENCIAS ===== -->
+        <section id="experiencias" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="exp-titulo"></h2>
+                <p class="section-subtitle" id="exp-subtitulo"></p>
+                <div class="experiencias-grid" id="experiencias-grid"></div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN SERVICIOS ===== -->
+        <section id="servicios" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="servicios-titulo"></h2>
+                <p class="section-subtitle" id="servicios-subtitulo"></p>
+                <div class="servicios-grid" id="servicios-grid"></div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN SOBRE NOSOTROS ===== -->
+        <section id="nosotros" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="nosotros-titulo"></h2>
+                <p class="section-subtitle" id="nosotros-subtitulo"></p>
+
+                <div class="nosotros-grid">
+                    <div class="nosotros-imagen" id="nosotros-imagen"></div>
+                    <div class="nosotros-contenido" id="nosotros-contenido"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN TESTIMONIOS ===== -->
+        <section id="testimonios" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="testimonios-titulo"></h2>
+                <p class="section-subtitle" id="testimonios-subtitulo"></p>
+                <div class="testimonios-grid" id="testimonios-grid"></div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN GALERÍA ===== -->
+        <section id="galeria" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="galeria-titulo"></h2>
+                <p class="section-subtitle" id="galeria-subtitulo"></p>
+
+                <!-- GRID DE GALERÍA -->
+                <div class="galeria-grid" id="galeria-grid"></div>
+            </div>
+
+            <!-- MODAL -->
+            <div class="modal-galeria" id="modal-galeria">
+                <span class="modal-cerrar">&times;</span>
+                <div class="modal-contenido">
+                    <img id="modal-imagen" src="" alt="Imagen ampliada">
+                    <div class="modal-info">
+                        <h3 id="modal-titulo"></h3>
+                        <p id="modal-descripcion"></p>
+                    </div>
+                    <button class="modal-prev" onclick="cambiarImagenGaleria(-1)">❮</button>
+                    <button class="modal-next" onclick="cambiarImagenGaleria(1)">❯</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN CONTACTO ===== -->
+        <section id="contacto" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="contacto-titulo"></h2>
+                <p class="section-subtitle" id="contacto-subtitulo"></p>
+
+                <div class="contacto-grid">
+                    <div class="contacto-info" id="contacto-info"></div>
+                    <div class="mapa-container" id="mapa-container"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ===== SECCIÓN RESERVAS ===== -->
+        <section id="reservar" class="seccion">
+            <div class="container">
+                <h2 class="section-title" id="reservas-titulo"></h2>
+                <p class="section-subtitle" id="reservas-subtitulo"></p>
+
+                <!-- PESTAÑAS -->
+                <div class="reservas-tabs">
+                    <button class="tab-btn active" onclick="cambiarTabReserva('habitacion')" id="tab-habitacion"><i class="fas fa-bed"></i> Reservar habitación</button>
+                    <button class="tab-btn" onclick="cambiarTabReserva('experiencia')" id="tab-experiencia"><i class="fas fa-umbrella-beach"></i> Reservar experiencia</button>
+                </div>
+
+                <!-- CONTENIDO HABITACIÓN -->
+                <div id="tab-habitacion-content" class="tab-content active">
+                    <div class="reservas-grid">
+                        <!-- CALENDARIO -->
+                        <div class="calendario-section">
+                            <h3>📅 1. Selecciona fechas</h3>
+                            <div class="calendario-header">
+                                <button onclick="cambiarMesReservas(-1)">←</button>
+                                <h4 id="mes-actual-reservas">Mayo 2025</h4>
+                                <button onclick="cambiarMesReservas(1)">→</button>
+                            </div>
+                            <div class="dias-semana">
+                                <span>L</span><span>M</span><span>X</span><span>J</span><span>V</span><span>S</span><span>D</span>
+                            </div>
+                            <div class="calendario-grid" id="calendario-grid-reservas"></div>
+                            <div class="info-calendario">
+                                <span class="badge-disponible">✅ Disponible</span>
+                                <span class="badge-ocupado">❌ Ocupado</span>
+                                <span class="badge-seleccionado">🔵 Seleccionado</span>
+                            </div>
+                        </div>
+
+                        <!-- HABITACIONES -->
+                        <div class="habitaciones-section">
+                            <h3>🏨 2. Elige habitación</h3>
+                            <div id="habitaciones-reservas-container"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTENIDO EXPERIENCIA -->
+                <div id="tab-experiencia-content" class="tab-content">
+                    <div class="experiencia-reserva-grid">
+                        <div class="experiencia-selector-section">
+                            <h3>🌊 1. Elige experiencia</h3>
+                            <div id="experiencias-reserva-container" class="experiencias-reserva-grid"></div>
+                        </div>
+
+                        <div class="experiencia-detalles-section">
+                            <h3>📅 2. Detalles de la reserva</h3>
+                            
+                            <div class="experiencia-seleccionada" id="experiencia-seleccionada-info" style="display: none;">
+                                <h4 id="exp-seleccionada-nombre"></h4>
+                                <p id="exp-seleccionada-desc"></p>
+                                <div class="exp-precio" id="exp-seleccionada-precio"></div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Fecha *</label>
+                                    <input type="date" id="exp-fecha" onchange="actualizarResumenReservas()">
+                                </div>
+                                <div class="form-group">
+                                    <label>Hora</label>
+                                    <select id="exp-hora" onchange="actualizarResumenReservas()">
+                                        <option value="09:00">09:00 AM</option>
+                                        <option value="10:00">10:00 AM</option>
+                                        <option value="11:00">11:00 AM</option>
+                                        <option value="14:00">02:00 PM</option>
+                                        <option value="15:00">03:00 PM</option>
+                                        <option value="16:00">04:00 PM</option>
+                                        <option value="17:00">05:00 PM</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label>Número de personas *</label>
+                                    <input type="number" id="exp-personas" min="1" value="2" onchange="actualizarResumenReservas()">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- FORMULARIO COMÚN -->
+                <div class="formulario-section">
+                    <h3>📝 3. Tus datos</h3>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Nombre completo *</label>
+                            <input type="text" id="reservas-nombre" placeholder="Ej: María González" oninput="validarFormularioReservas()">
+                            <div class="error-mensaje" id="error-nombre"></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Email *</label>
+                            <input type="email" id="reservas-email" placeholder="maria@email.com" oninput="validarFormularioReservas()">
+                            <div class="error-mensaje" id="error-email"></div>
+                        </div>
+                    </div>
+
+                    <!-- RESUMEN HABITACIÓN -->
+                    <div class="resumen-reserva" id="resumen-habitacion">
+                        <h4>📋 Resumen de tu reserva</h4>
+                        <div class="resumen-item">
+                            <span>📅 Entrada:</span>
+                            <strong id="reservas-fecha-entrada">—</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>📅 Salida:</span>
+                            <strong id="reservas-fecha-salida">—</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>🌙 Noches:</span>
+                            <strong id="reservas-total-noches">0</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>🏨 Habitación:</span>
+                            <strong id="reservas-habitacion-seleccionada">—</strong>
+                        </div>
+                        <div class="resumen-total" id="reservas-precio-total">$0</div>
+                    </div>
+
+                    <!-- RESUMEN EXPERIENCIA -->
+                    <div class="resumen-reserva" id="resumen-experiencia" style="display: none;">
+                        <h4>📋 Resumen de tu experiencia</h4>
+                        <div class="resumen-item">
+                            <span>🌊 Experiencia:</span>
+                            <strong id="resumen-exp-nombre">—</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>📅 Fecha:</span>
+                            <strong id="resumen-exp-fecha">—</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>⏰ Hora:</span>
+                            <strong id="resumen-exp-hora">—</strong>
+                        </div>
+                        <div class="resumen-item">
+                            <span>👥 Personas:</span>
+                            <strong id="resumen-exp-personas">—</strong>
+                        </div>
+                        <div class="resumen-total" id="resumen-exp-total">$0</div>
+                    </div>
+
+                    <!-- MÉTODOS DE PAGO -->
+                    <div class="metodos-pago">
+                        <h4><i class="fas fa-credit-card"></i> Método de pago</h4>
+                        <div class="pago-opciones">
+                            <button type="button" class="btn-pago" data-metodo="stripe" onclick="seleccionarPago('stripe', this)">
+                                <i class="fab fa-stripe"></i> Tarjeta de crédito / débito
+                            </button>
+                        </div>
+                        <p id="metodo-seleccionado" class="metodo-info"></p>
+                    </div>
+
+                    <button class="btn-reservar-final" id="btn-reservar-final" disabled onclick="procesarReservaConPago()">
+                        💳 Reservar ahora con tarjeta
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p id="footer-texto"></p>
+        </div>
+    </footer>
+
+    <script>
+        // ============================================
+        // DATOS GLOBALES
+        // ============================================
+        let configuracion = {};
+        let datos = {
+            habitaciones: [],
+            experiencias: [],
+            servicios: [],
+            reservas: []
+        };
+
+        // ============================================
+        // MENÚ Y NAVEGACIÓN
+        // ============================================
+        const menuToggle = document.getElementById('menuToggle');
+        const mainMenu = document.getElementById('mainMenu');
+        const menuLinks = document.querySelectorAll('.menu-link');
+        const secciones = document.querySelectorAll('.seccion');
+
+        menuToggle.addEventListener('click', function(e) {
+            e.stopPropagation();
+            mainMenu.classList.toggle('active');
+            this.textContent = mainMenu.classList.contains('active') ? '✕' : '☰';
+        });
+
+        function cambiarSeccion(seccionId) {
+            secciones.forEach(s => s.classList.remove('activa'));
+            document.getElementById(seccionId).classList.add('activa');
+            menuLinks.forEach(link => {
+                link.classList.remove('activo');
+                if (link.dataset.seccion === seccionId) link.classList.add('activo');
+            });
+        }
+
+        menuLinks.forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                cambiarSeccion(this.dataset.seccion);
+                if (window.innerWidth <= 992) {
+                    mainMenu.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                }
+            });
+        });
+
+        document.addEventListener('click', function(e) {
+            if (window.innerWidth <= 992) {
+                if (!mainMenu.contains(e.target) && !menuToggle.contains(e.target)) {
+                    mainMenu.classList.remove('active');
+                    menuToggle.textContent = '☰';
+                }
+            }
+        });
+
+        document.getElementById('hero-boton')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            const seccionId = this.dataset.seccion;
+            if (seccionId) {
+                cambiarSeccion(seccionId);
+            }
+        });
+
+        // ============================================
+        // CARGA DE DATOS - API
+        // ============================================
+        async function cargarConfiguracion() {
+            try {
+                const respuesta = await fetch('/api/config');
+                if (!respuesta.ok) throw new Error('No se pudo cargar configuración');
+                configuracion = await respuesta.json();
+                console.log('✅ Configuración cargada');
+                return true;
+            } catch (error) {
+                console.log('⚠️ Error cargando configuración:', error.message);
+                return false;
+            }
+        }
+
+        async function cargarDatos() {
+            try {
+                const respuesta = await fetch('/api/datos');
+                if (!respuesta.ok) throw new Error('No se pudo cargar datos');
+                datos = await respuesta.json();
+                console.log('✅ Datos cargados');
+                return true;
+            } catch (error) {
+                console.log('⚠️ Error cargando datos:', error.message);
+                return false;
+            }
+        }
+
+        // ============================================
+        // STRIPE
+        // ============================================
+        let stripePublicKey = '';
+        let stripe = null;
+
+        function initStripe() {
+            if (stripePublicKey && typeof Stripe !== 'undefined') {
+                stripe = Stripe(stripePublicKey);
+                console.log('✅ Stripe inicializado');
+            }
+        }
+
+        // ============================================
+        // FUNCIÓN HERO
+        // ============================================
+        function initHero(datos) {
+            const hero = document.getElementById('hero');
+            if (!hero || !datos) return;
+            if (datos.imagen) {
+                hero.style.backgroundImage = `linear-gradient(rgba(0,0,0,${datos.overlay || 0.4}), rgba(0,0,0,${datos.overlay || 0.4})), url('${datos.imagen}')`;
+            }
+            document.getElementById('hero-superior').textContent = datos.texto_superior || '';
+            document.getElementById('hero-principal').textContent = datos.texto_principal || '';
+            document.getElementById('hero-inferior').textContent = datos.texto_inferior || '';
+            document.getElementById('hero-boton').textContent = datos.boton || 'Ver más';
+        }
+
+        // ============================================
+        // FUNCIÓN HABITACIONES
+        // ============================================
+        function initHabitaciones(lista) {
+            const grid = document.getElementById('habitaciones-grid');
+            if (!grid || !lista) return;
+
+            grid.innerHTML = '';
+
+            function crearTarjeta(hab) {
+                const card = document.createElement('article');
+                card.className = 'habitacion-card';
+                card.setAttribute('data-id', hab.id);
+                
+                let badgeHTML = '';
+                if (hab.promocion) {
+                    badgeHTML = `<div class="habitacion-badge badge-oferta">🎁 ${hab.promocion}</div>`;
+                } else if (hab.disponibles < 3) {
+                    badgeHTML = `<div class="habitacion-badge badge-popular">🔥 Últimas unidades</div>`;
+                } else if (hab.badgePermanente) {
+                    badgeHTML = `<div class="habitacion-badge badge-${hab.badgeTipo || 'popular'}">${hab.badgePermanente}</div>`;
+                }
+                
+                card.innerHTML = `
+                    <div class="habitacion-img">
+                        <img src="${hab.imagen}" alt="${hab.nombre}" loading="lazy">
+                        ${badgeHTML}
+                    </div>
+                    <div class="habitacion-content">
+                        <h3>${hab.nombre}</h3>
+                        <p class="habitacion-desc">${hab.descripcion}</p>
+                        <div class="habitacion-features">
+                            ${hab.caracteristicas.map(c => `<span>${c}</span>`).join('')}
+                        </div>
+                        <div class="habitacion-footer">
+                            <span class="precio">$${hab.precio} <small>/ noche</small></span>
+                            <button class="btn-reservar" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('habitacion'); }, 100);">Reservar</button>
+                        </div>
+                    </div>
+                `;
+                return card;
+            }
+            lista.forEach(hab => grid.appendChild(crearTarjeta(hab)));
+            window.habitacionesData = lista;
+        }
+
+        // ============================================
+        // FUNCIÓN EXPERIENCIAS
+        // ============================================
+        function initExperiencias(datosExp) {
+            const grid = document.getElementById('experiencias-grid');
+            if (!grid || !datosExp?.lista) return;
+
+            if (datosExp.titulo) document.getElementById('exp-titulo').textContent = datosExp.titulo;
+            if (datosExp.subtitulo) document.getElementById('exp-subtitulo').textContent = datosExp.subtitulo;
+
+            grid.innerHTML = '';
+
+            datosExp.lista.forEach(exp => {
+                const card = document.createElement('article');
+                card.className = 'experiencia-card';
+                const badgeHTML = exp.badge ? `<div class="experiencia-badge badge-${exp.badgeTipo || 'popular'}">${exp.badge}</div>` : '';
+                const incluyeHTML = (exp.incluye || []).map(item => `<span>${item}</span>`).join('');
+
+                card.innerHTML = `
+                    <div class="experiencia-img">
+                        <img src="${exp.imagen}" alt="${exp.nombre}" loading="lazy">
+                        ${badgeHTML}
+                    </div>
+                    <div class="experiencia-content">
+                        <h3>${exp.nombre}</h3>
+                        <div class="experiencia-meta">
+                            ${exp.duracion ? `<span><i class="fas fa-clock"></i> ${exp.duracion}</span>` : ''}
+                        </div>
+                        <p class="experiencia-desc">${exp.descripcion}</p>
+                        ${incluyeHTML ? `<div class="experiencia-incluye"><h4><i class="fas fa-check-circle"></i> Incluye:</h4><div class="incluye-items">${incluyeHTML}</div></div>` : ''}
+                        <div class="experiencia-footer">
+                            <span class="experiencia-precio">$${exp.precio} <small>por persona</small></span>
+                            <button class="btn-experiencia" onclick="cambiarSeccion('reservar'); setTimeout(() => { cambiarTabReserva('experiencia'); }, 100);">Reservar</button>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+            window.experienciasData = datosExp.lista;
+        }
+
+        // ============================================
+        // FUNCIÓN SERVICIOS
+        // ============================================
+        function initServicios(lista) {
+            const grid = document.getElementById('servicios-grid');
+            if (!grid || !lista) return;
+
+            grid.innerHTML = '';
+
+            lista.forEach(servicio => {
+                const card = document.createElement('article');
+                card.className = 'servicio-card';
+                card.innerHTML = `
+                    <div class="servicio-icono">${servicio.icono}</div>
+                    <h3>${servicio.nombre}</h3>
+                    <p class="servicio-desc">${servicio.descripcion}</p>
+                    <span class="servicio-horario"><i class="fas fa-clock"></i> ${servicio.horario}</span>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // FUNCIÓN SOBRE NOSOTROS
+        // ============================================
+        function initNosotros(datos) {
+            if (!datos) return;
+            if (datos.titulo) document.getElementById('nosotros-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('nosotros-subtitulo').textContent = datos.subtitulo;
+            const imagenContainer = document.getElementById('nosotros-imagen');
+            if (imagenContainer && datos.imagen) {
+                imagenContainer.innerHTML = `<img src="${datos.imagen}" alt="Sobre Nosotros">`;
+            }
+            const contenidoContainer = document.getElementById('nosotros-contenido');
+            if (!contenidoContainer) return;
+            let html = `<p class="nosotros-historia">${datos.historia}</p>`;
+            if (datos.valores && datos.valores.length > 0) {
+                html += '<div class="nosotros-valores">';
+                datos.valores.forEach(valor => {
+                    html += `<div class="valor-item"><span class="valor-icono">${valor.icono}</span><span>${valor.texto}</span></div>`;
+                });
+                html += '</div>';
+            }
+            contenidoContainer.innerHTML = html;
+        }
+
+        // ============================================
+        // FUNCIÓN TESTIMONIOS
+        // ============================================
+        function initTestimonios(datos) {
+            const grid = document.getElementById('testimonios-grid');
+            if (!grid || !datos?.lista) return;
+            if (datos.titulo) document.getElementById('testimonios-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('testimonios-subtitulo').textContent = datos.subtitulo;
+            grid.innerHTML = '';
+            datos.lista.forEach(testimonio => {
+                const card = document.createElement('article');
+                card.className = 'testimonio-card';
+                let estrellas = '';
+                for (let i = 0; i < 5; i++) {
+                    estrellas += i < testimonio.rating ? '<i class="fas fa-star"></i>' : '<i class="far fa-star"></i>';
+                }
+                card.innerHTML = `
+                    <p class="testimonio-texto">${testimonio.texto}</p>
+                    <div class="testimonio-autor">
+                        <img src="${testimonio.avatar}" alt="${testimonio.nombre}" class="testimonio-avatar">
+                        <div class="testimonio-info">
+                            <h4>${testimonio.nombre}</h4>
+                            <p>${testimonio.lugar}</p>
+                            <div class="testimonio-rating">${estrellas}</div>
+                        </div>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // ============================================
+        // FUNCIÓN GALERÍA
+        // ============================================
+        let galeriaState = { items: [], currentIndex: 0, currentFotos: [] };
+        function initGaleria(datos) {
+            if (!datos?.items) return;
+            galeriaState.items = datos.items;
+            if (datos.titulo) document.getElementById('galeria-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('galeria-subtitulo').textContent = datos.subtitulo;
+            renderizarGaleria(galeriaState.items);
+        }
+        function renderizarGaleria(items) {
+            const grid = document.getElementById('galeria-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+            items.forEach((item, index) => {
+                const galeriaItem = document.createElement('div');
+                galeriaItem.className = 'galeria-item';
+                galeriaItem.dataset.category = item.categoria;
+                galeriaItem.innerHTML = `
+                    <img src="${item.fotos[0]}" alt="${item.titulo}" loading="lazy">
+                    <div class="galeria-overlay">
+                        <h3>${item.titulo}</h3>
+                        <p>${item.descripcion}</p>
+                        <button class="btn-ver-mas" data-index="${index}">Ver más</button>
+                    </div>
+                `;
+                const btn = galeriaItem.querySelector('.btn-ver-mas');
+                btn.addEventListener('click', (e) => { e.stopPropagation(); abrirModalGaleria(index); });
+                grid.appendChild(galeriaItem);
+            });
+        }
+        function abrirModalGaleria(index) {
+            const item = galeriaState.items[index];
+            galeriaState.currentFotos = item.fotos;
+            galeriaState.currentIndex = 0;
+            document.getElementById('modal-imagen').src = galeriaState.currentFotos[0];
+            document.getElementById('modal-titulo').textContent = item.titulo;
+            document.getElementById('modal-descripcion').textContent = item.descripcion;
+            document.getElementById('modal-galeria').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+        function cerrarModalGaleria() {
+            document.getElementById('modal-galeria').style.display = 'none';
+            document.body.style.overflow = '';
+        }
+        function cambiarImagenGaleria(direccion) {
+            galeriaState.currentIndex = (galeriaState.currentIndex + direccion + galeriaState.currentFotos.length) % galeriaState.currentFotos.length;
+            document.getElementById('modal-imagen').src = galeriaState.currentFotos[galeriaState.currentIndex];
+        }
+        document.querySelector('.modal-cerrar')?.addEventListener('click', cerrarModalGaleria);
+        document.getElementById('modal-galeria')?.addEventListener('click', function(e) { if (e.target === this) cerrarModalGaleria(); });
+        document.addEventListener('keydown', function(e) {
+            if (document.getElementById('modal-galeria').style.display === 'block') {
+                if (e.key === 'Escape') cerrarModalGaleria();
+                else if (e.key === 'ArrowLeft') cambiarImagenGaleria(-1);
+                else if (e.key === 'ArrowRight') cambiarImagenGaleria(1);
+            }
+        });
+
+        // ============================================
+        // FUNCIÓN CONTACTO
+        // ============================================
+        function initContacto(datos) {
+            if (!datos) return;
+            if (datos.titulo) document.getElementById('contacto-titulo').textContent = datos.titulo;
+            if (datos.subtitulo) document.getElementById('contacto-subtitulo').textContent = datos.subtitulo;
+            const container = document.getElementById('contacto-info');
+            if (!container) return;
+            let html = '';
+            if (datos.direccion) {
+                html += `<div class="info-card"><h3><i class="fas fa-map-marker-alt"></i> Dirección</h3><p>${datos.direccion.replace(/\n/g, '<br>')}</p></div>`;
+            }
+            if (datos.telefono || datos.email) {
+                html += `<div class="info-card"><h3><i class="fas fa-phone-alt"></i> Contacto</h3>`;
+                if (datos.telefono) html += `<p><strong>Teléfono:</strong> <a href="tel:${datos.telefono}" title="Llamar ahora">${datos.telefono}</a></p>`;
+                if (datos.email) html += `<p><strong>Email:</strong> <a href="mailto:${datos.email}" title="Enviar correo">${datos.email}</a></p>`;
+                html += `</div>`;
+            }
+            if (datos.redes && datos.redes.length > 0) {
+                html += `<div class="info-card"><h3><i class="fas fa-share-alt"></i> Síguenos</h3><div class="redes-sociales">`;
+                datos.redes.forEach(red => {
+                    html += `<a href="${red.url}" class="red-social" target="_blank" title="Ir a ${red.nombre}">${red.icono}<span class="nombre">${red.nombre}</span></a>`;
+                });
+                html += `</div></div>`;
+            }
+            container.innerHTML = html;
+            const mapaContainer = document.getElementById('mapa-container');
+            if (mapaContainer && datos.mapa) {
+                mapaContainer.innerHTML = `<iframe src="${datos.mapa}" allowfullscreen="" loading="lazy" title="Ubicación del hotel"></iframe>`;
+            }
+        }
+
+        // ============================================
+        // FUNCIONES DE RESERVAS
+        // ============================================
+        const reservasState = {
+            mesActual: new Date().getMonth(),
+            añoActual: new Date().getFullYear(),
+            fechaInicio: null,
+            fechaFin: null,
+            habitacionSeleccionada: null,
+            experienciaSeleccionada: null,
+            tabActivo: 'habitacion',
+            disponibilidad: {}
+        };
+        
+        function generarDisponibilidad() {
+            for (let i = 0; i < 90; i++) {
+                const fecha = new Date();
+                fecha.setDate(fecha.getDate() + i);
+                const fechaStr = fecha.toISOString().split('T')[0];
+                reservasState.disponibilidad[fechaStr] = Math.random() > 0.3;
+            }
+        }
+        generarDisponibilidad();
+
+        function renderizarCalendario() {
+            const primerDia = new Date(reservasState.añoActual, reservasState.mesActual, 1);
+            const ultimoDia = new Date(reservasState.añoActual, reservasState.mesActual + 1, 0);
+            const meses = ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', 'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'];
+            document.getElementById('mes-actual-reservas').textContent = `${meses[reservasState.mesActual]} ${reservasState.añoActual}`;
+            let html = '';
+            let diaSemana = primerDia.getDay() === 0 ? 6 : primerDia.getDay() - 1;
+            for (let i = 0; i < diaSemana; i++) html += '<div class="calendario-vacio"></div>';
+            const hoy = new Date(); hoy.setHours(0,0,0,0);
+            for (let dia = 1; dia <= ultimoDia.getDate(); dia++) {
+                const fecha = new Date(reservasState.añoActual, reservasState.mesActual, dia);
+                const fechaStr = fecha.toISOString().split('T')[0];
+                let clases = 'calendario-dia';
+                if (fecha < hoy) clases += ' pasado';
+                else if (reservasState.disponibilidad[fechaStr]) clases += ' disponible';
+                else clases += ' ocupado';
+                if ((reservasState.fechaInicio && fechaStr === reservasState.fechaInicio) || 
+                    (reservasState.fechaFin && fechaStr === reservasState.fechaFin) ||
+                    (reservasState.fechaInicio && reservasState.fechaFin && fechaStr > reservasState.fechaInicio && fechaStr < reservasState.fechaFin)) clases += ' seleccionado';
+                html += `<div class="${clases}" onclick="seleccionarFecha('${fechaStr}')">${dia}</div>`;
+            }
+            document.getElementById('calendario-grid-reservas').innerHTML = html;
+        }
+
+        function renderizarHabitacionesReservas(habitaciones) {
+            const container = document.getElementById('habitaciones-reservas-container');
+            if (!container || !habitaciones) return;
+            container.innerHTML = habitaciones.map(h => `<div class="habitacion-card-reserva" onclick="seleccionarHabitacionReserva(${h.id})" data-id="${h.id}"><h4>${h.nombre}</h4><div class="precio">$${h.precio} <small>/ noche</small></div></div>`).join('');
+        }
+        
+        function renderizarExperienciasReservas(experiencias) {
+            const container = document.getElementById('experiencias-reserva-container');
+            if (!container || !experiencias) return;
+            container.innerHTML = experiencias.map(exp => `<div class="experiencia-card-reserva" onclick="seleccionarExperienciaReserva(${exp.id})" data-id="${exp.id}"><div class="experiencia-info"><h4>${exp.nombre}</h4><p>${exp.duracion || ''}</p></div><div class="experiencia-precio-card">$${exp.precio}</div></div>`).join('');
+        }
+
+        function seleccionarFecha(fechaStr) {
+            const fecha = new Date(fechaStr), hoy = new Date(); hoy.setHours(0,0,0,0);
+            if (fecha < hoy) return;
+            if (!reservasState.disponibilidad[fechaStr]) return alert('Esta fecha no está disponible');
+            if (!reservasState.fechaInicio || (reservasState.fechaInicio && reservasState.fechaFin)) {
+                reservasState.fechaInicio = fechaStr;
+                reservasState.fechaFin = null;
+            } else if (reservasState.fechaInicio && !reservasState.fechaFin) {
+                if (new Date(fechaStr) > new Date(reservasState.fechaInicio)) reservasState.fechaFin = fechaStr;
+                else reservasState.fechaInicio = fechaStr;
+            }
+            renderizarCalendario();
+            actualizarResumenReservas();
+        }
+        
+        function seleccionarHabitacionReserva(id) {
+            reservasState.habitacionSeleccionada = id;
+            document.querySelectorAll('.habitacion-card-reserva').forEach(card => { card.classList.remove('seleccionada'); if (card.dataset.id == id) card.classList.add('seleccionada'); });
+            actualizarResumenReservas();
+        }
+        
+        function seleccionarExperienciaReserva(id) {
+            const experiencias = window.experienciasData || [];
+            const experiencia = experiencias.find(e => e.id === id);
+            reservasState.experienciaSeleccionada = experiencia;
+            document.querySelectorAll('.experiencia-card-reserva').forEach(card => { card.classList.remove('seleccionada'); if (card.dataset.id == id) card.classList.add('seleccionada'); });
+            if (experiencia) {
+                document.getElementById('experiencia-seleccionada-info').style.display = 'block';
+                document.getElementById('exp-seleccionada-nombre').textContent = experiencia.nombre;
+                document.getElementById('exp-seleccionada-desc').textContent = experiencia.descripcion || '';
+                document.getElementById('exp-seleccionada-precio').textContent = `$${experiencia.precio} por persona`;
+            }
+            actualizarResumenReservas();
+        }
+        
+        function cambiarTabReserva(tab) {
+            reservasState.tabActivo = tab;
+            document.getElementById('tab-habitacion').classList.toggle('active', tab === 'habitacion');
+            document.getElementById('tab-experiencia').classList.toggle('active', tab === 'experiencia');
+            document.getElementById('tab-habitacion-content').classList.toggle('active', tab === 'habitacion');
+            document.getElementById('tab-experiencia-content').classList.toggle('active', tab === 'experiencia');
+            document.getElementById('resumen-habitacion').style.display = tab === 'habitacion' ? 'block' : 'none';
+            document.getElementById('resumen-experiencia').style.display = tab === 'experiencia' ? 'block' : 'none';
+            actualizarResumenReservas();
+        }
+        
+        function cambiarMesReservas(direccion) {
+            reservasState.mesActual += direccion;
+            if (reservasState.mesActual < 0) { reservasState.mesActual = 11; reservasState.añoActual--; }
+            else if (reservasState.mesActual > 11) { reservasState.mesActual = 0; reservasState.añoActual++; }
+            renderizarCalendario();
+        }
+        
+        function actualizarResumenReservas() {
+            if (reservasState.tabActivo === 'habitacion') {
+                if (reservasState.fechaInicio && reservasState.fechaFin && reservasState.habitacionSeleccionada) {
+                    const habitaciones = window.habitacionesData || [];
+                    const habitacion = habitaciones.find(h => h.id === reservasState.habitacionSeleccionada);
+                    const inicio = new Date(reservasState.fechaInicio), fin = new Date(reservasState.fechaFin);
+                    const noches = Math.round((fin - inicio) / (86400000));
+                    const total = (habitacion?.precio || 0) * noches;
+                    document.getElementById('reservas-fecha-entrada').textContent = new Date(reservasState.fechaInicio).toLocaleDateString('es', { day:'2-digit', month:'short' });
+                    document.getElementById('reservas-fecha-salida').textContent = new Date(reservasState.fechaFin).toLocaleDateString('es', { day:'2-digit', month:'short' });
+                    document.getElementById('reservas-total-noches').textContent = noches;
+                    document.getElementById('reservas-habitacion-seleccionada').textContent = habitacion?.nombre || '—';
+                    document.getElementById('reservas-precio-total').textContent = `$${total}`;
+                }
+            } else {
+                const exp = reservasState.experienciaSeleccionada, fecha = document.getElementById('exp-fecha')?.value, hora = document.getElementById('exp-hora')?.value, personas = document.getElementById('exp-personas')?.value;
+                if (exp && fecha && personas) {
+                    const total = exp.precio * parseInt(personas);
+                    document.getElementById('resumen-exp-nombre').textContent = exp.nombre;
+                    document.getElementById('resumen-exp-fecha').textContent = new Date(fecha).toLocaleDateString('es');
+                    document.getElementById('resumen-exp-hora').textContent = hora;
+                    document.getElementById('resumen-exp-personas').textContent = personas;
+                    document.getElementById('resumen-exp-total').textContent = `$${total}`;
+                }
+            }
+            validarFormularioReservas();
+        }
+        
+        function validarFormularioReservas() {
+            const nombre = document.getElementById('reservas-nombre')?.value.trim() || '';
+            const email = document.getElementById('reservas-email')?.value.trim() || '';
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            let isValid = true;
+            if (!nombre) { document.getElementById('error-nombre').textContent = 'El nombre es obligatorio'; document.getElementById('reservas-nombre')?.classList.add('error'); isValid = false; }
+            else { document.getElementById('error-nombre').textContent = ''; document.getElementById('reservas-nombre')?.classList.remove('error'); }
+            if (!email) { document.getElementById('error-email').textContent = 'El email es obligatorio'; document.getElementById('reservas-email')?.classList.add('error'); isValid = false; }
+            else if (!emailRegex.test(email)) { document.getElementById('error-email').textContent = 'Email no válido'; document.getElementById('reservas-email')?.classList.add('error'); isValid = false; }
+            else { document.getElementById('error-email').textContent = ''; document.getElementById('reservas-email')?.classList.remove('error'); }
+            if (reservasState.tabActivo === 'habitacion') { if (!reservasState.fechaInicio || !reservasState.fechaFin || !reservasState.habitacionSeleccionada) isValid = false; }
+            else { if (!reservasState.experienciaSeleccionada || !document.getElementById('exp-fecha')?.value) isValid = false; }
+            document.getElementById('btn-reservar-final').disabled = !isValid;
+            return isValid;
+        }
+
+        let metodoPagoSeleccionado = null;
+        
+        function seleccionarPago(metodo, elemento) {
+            metodoPagoSeleccionado = metodo;
+            document.querySelectorAll('.btn-pago').forEach(btn => btn.classList.remove('seleccionado'));
+            elemento.classList.add('seleccionado');
+            document.getElementById('metodo-seleccionado').textContent = '💳 Pagos seguros con Stripe';
+            if (validarFormularioReservas()) document.getElementById('btn-reservar-final').disabled = false;
+        }
+        
+        // ============================================
+        // PROCESAR RESERVA CON STRIPE
+        // ============================================
+        async function procesarReservaConPago() {
+            if (!validarFormularioReservas()) return;
+            if (!metodoPagoSeleccionado) {
+                alert('⚠️ Por favor, selecciona un método de pago antes de reservar.');
+                return;
+            }
+            
+            const nombre = document.getElementById('reservas-nombre').value;
+            const email = document.getElementById('reservas-email').value;
+            
+            let reservaData = {
+                cliente_nombre: nombre,
+                cliente_email: email,
+                metodo_pago: metodoPagoSeleccionado,
+                estado: 'pendiente'
+            };
+            
+            let total = 0;
+            
+            if (reservasState.tabActivo === 'habitacion') {
+                const habitaciones = window.habitacionesData || [];
+                const habitacion = habitaciones.find(h => h.id === reservasState.habitacionSeleccionada);
+                
+                if (!habitacion) {
+                    alert('❌ Por favor selecciona una habitación');
+                    return;
+                }
+                
+                const inicio = new Date(reservasState.fechaInicio);
+                const fin = new Date(reservasState.fechaFin);
+                const noches = Math.round((fin - inicio) / (86400000));
+                total = habitacion.precio * noches;
+                
+                reservaData = {
+                    ...reservaData,
+                    tipo: 'habitacion',
+                    item_id: habitacion.id,
+                    item_nombre: habitacion.nombre,
+                    fecha_inicio: reservasState.fechaInicio,
+                    fecha_fin: reservasState.fechaFin,
+                    noches: noches,
+                    total: total
+                };
+            } else {
+                const exp = reservasState.experienciaSeleccionada;
+                if (!exp) {
+                    alert('❌ Por favor selecciona una experiencia');
+                    return;
+                }
+                
+                const fecha = document.getElementById('exp-fecha').value;
+                const hora = document.getElementById('exp-hora').value;
+                const personas = parseInt(document.getElementById('exp-personas').value);
+                total = exp.precio * personas;
+                
+                reservaData = {
+                    ...reservaData,
+                    tipo: 'experiencia',
+                    item_id: exp.id,
+                    item_nombre: exp.nombre,
+                    fecha: fecha,
+                    hora: hora,
+                    personas: personas,
+                    total: total
+                };
+            }
+            
+            const btnReservar = document.getElementById('btn-reservar-final');
+            const textoOriginal = btnReservar.textContent;
+            btnReservar.textContent = '⏳ Procesando pago...';
+            btnReservar.disabled = true;
+            
+            try {
+                // 1. Crear intención de pago en el servidor
+                const pagoResponse = await fetch('/api/crear-pago', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        amount: total,
+                        currency: 'usd',
+                        description: `Reserva de ${reservaData.tipo} - ${reservaData.item_nombre}`,
+                        metadata: {
+                            cliente: nombre,
+                            email: email,
+                            tipo: reservaData.tipo,
+                            item: reservaData.item_nombre
+                        }
+                    })
+                });
+                
+                const pagoResult = await pagoResponse.json();
+                
+                if (!pagoResult.success) {
+                    throw new Error(pagoResult.error || 'Error al iniciar el pago');
+                }
+                
+                // 2. Confirmar el pago con Stripe
+                if (!stripe) {
+                    throw new Error('Stripe no está inicializado');
+                }
+                
+                const { error: confirmError } = await stripe.confirmPayment({
+                    clientSecret: pagoResult.clientSecret,
+                    confirmParams: {
+                        payment_method_data: {
+                            billing_details: {
+                                name: nombre,
+                                email: email,
+                            },
+                        },
+                    },
+                    redirect: 'if_required',
+                });
+                
+                if (confirmError) {
+                    throw new Error(confirmError.message);
+                }
+                
+                // 3. Pago exitoso, guardar reserva
+                const reservaResponse = await fetch('/api/confirmar-reserva', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        reserva: reservaData,
+                        paymentIntentId: pagoResult.paymentIntentId
+                    })
+                });
+                
+                const reservaResult = await reservaResponse.json();
+                
+                if (reservaResult.success) {
+                    alert(`✅ ¡Pago y reserva confirmados!\n\nCliente: ${nombre}\nEmail: ${email}\nTotal: $${total}\n\nTe hemos enviado un email con los detalles.`);
+                    
+                    // Resetear formulario
+                    document.getElementById('reservas-nombre').value = '';
+                    document.getElementById('reservas-email').value = '';
+                    
+                    if (reservasState.tabActivo === 'habitacion') {
+                        reservasState.fechaInicio = null;
+                        reservasState.fechaFin = null;
+                        reservasState.habitacionSeleccionada = null;
+                        renderizarCalendario();
+                        document.querySelectorAll('.habitacion-card-reserva').forEach(card => {
+                            card.classList.remove('seleccionada');
+                        });
+                    } else {
+                        reservasState.experienciaSeleccionada = null;
+                        document.getElementById('exp-fecha').value = '';
+                        document.getElementById('exp-personas').value = '2';
+                        document.getElementById('experiencia-seleccionada-info').style.display = 'none';
+                        document.querySelectorAll('.experiencia-card-reserva').forEach(card => {
+                            card.classList.remove('seleccionada');
+                        });
+                    }
+                    
+                    metodoPagoSeleccionado = null;
+                    document.querySelectorAll('.btn-pago').forEach(btn => btn.classList.remove('seleccionado'));
+                    document.getElementById('metodo-seleccionado').textContent = '';
+                    actualizarResumenReservas();
+                    validarFormularioReservas();
+                    btnReservar.disabled = true;
+                } else {
+                    throw new Error(reservaResult.error || 'Error al guardar la reserva');
+                }
+                
+            } catch (error) {
+                console.error('Error:', error);
+                alert(`❌ Error en el proceso: ${error.message}\n\nPor favor intenta de nuevo.`);
+                btnReservar.disabled = false;
+            } finally {
+                btnReservar.textContent = textoOriginal;
+            }
+        }
+        
+        function initReservas(datosReservas) {
+            if (!datosReservas) return;
+            if (datosReservas.titulo) document.getElementById('reservas-titulo').textContent = datosReservas.titulo;
+            if (datosReservas.subtitulo) document.getElementById('reservas-subtitulo').textContent = datosReservas.subtitulo;
+            window.habitacionesData = window.habitacionesData || [];
+            window.experienciasData = window.experienciasData || [];
+            renderizarHabitacionesReservas(window.habitacionesData);
+            renderizarExperienciasReservas(window.experienciasData);
+            const hoy = new Date().toISOString().split('T')[0];
+            const expFecha = document.getElementById('exp-fecha');
+            if (expFecha) expFecha.min = hoy;
+            renderizarCalendario();
+        }
+
+        // ============================================
+        // CARGA PRINCIPAL
+        // ============================================
+        async function cargarTodo() {
+            await cargarConfiguracion();
+            await cargarDatos();
+
+            // Aplicar colores
+            if (configuracion.marca?.colores) {
+                const c = configuracion.marca.colores;
+                if (c.primario) document.documentElement.style.setProperty('--color-primario', c.primario);
+                if (c.secundario) document.documentElement.style.setProperty('--color-secundario', c.secundario);
+                if (c.acento) document.documentElement.style.setProperty('--color-acento', c.acento);
+                if (c.texto) document.documentElement.style.setProperty('--color-texto', c.texto);
+                if (c.fondo) document.documentElement.style.setProperty('--color-fondo', c.fondo);
+            }
+            
+            // Logo y título
+            if (configuracion.marca?.logo) document.getElementById('logo').textContent = configuracion.marca.logo;
+            if (configuracion.footer?.texto) document.getElementById('footer-texto').textContent = configuracion.footer.texto;
+            if (configuracion.marca?.nombre) document.getElementById('page-title').textContent = configuracion.marca.nombre;
+            
+            // Inicializar Stripe
+            if (configuracion.stripe?.public_key) {
+                stripePublicKey = configuracion.stripe.public_key;
+                const script = document.createElement('script');
+                script.src = 'https://js.stripe.com/v3/';
+                script.onload = () => {
+                    initStripe();
+                };
+                document.head.appendChild(script);
+            }
+            
+            // Hero
+            if (configuracion.hero) initHero(configuracion.hero);
+            
+            // Habitaciones
+            if (datos.habitaciones && datos.habitaciones.length > 0) {
+                document.getElementById('hab-titulo').textContent = "Nuestras Habitaciones";
+                document.getElementById('hab-subtitulo').textContent = "Espacios diseñados para tu descanso con vista al mar";
+                initHabitaciones(datos.habitaciones);
+            }
+            
+            // Experiencias
+            if (datos.experiencias && datos.experiencias.length > 0) {
+                initExperiencias({
+                    titulo: "Experiencias Únicas",
+                    subtitulo: "Vive el Caribe más allá de tu habitación",
+                    lista: datos.experiencias
+                });
+            }
+            
+            // Servicios
+            if (datos.servicios && datos.servicios.length > 0) {
+                initServicios(datos.servicios);
+            }
+            
+            // Sobre Nosotros
+            if (configuracion.nosotros) initNosotros(configuracion.nosotros);
+            
+            // Testimonios
+            if (configuracion.testimonios) initTestimonios(configuracion.testimonios);
+            
+            // Galería
+            if (configuracion.galeria) initGaleria(configuracion.galeria);
+            
+            // Contacto
+            if (configuracion.contacto) initContacto(configuracion.contacto);
+            
+            // Reservas
+            if (configuracion.reservas) initReservas(configuracion.reservas);
+        }
+
+        cargarTodo();
+    </script>
+</body>
+</html>

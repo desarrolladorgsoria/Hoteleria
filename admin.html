@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title id="page-title">Panel Admin - Cargando...</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background: #f5f5f5;
+            color: #333;
+            line-height: 1.5;
+        }
+        :root {
+            --color-primario: #0B4F6C;
+            --color-secundario: #F18F01;
+            --color-acento: #2EC4B6;
+            --color-texto: #2D3047;
+            --color-fondo: #F7F7F2;
+        }
+        
+        /* ===== MODAL DE AUTENTICACIÓN ===== */
+        .modal-auth {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-auth.active {
+            display: flex;
+        }
+        .modal-auth-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 16px;
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+        .modal-auth-content i {
+            font-size: 3rem;
+            color: var(--color-primario);
+            margin-bottom: 1rem;
+        }
+        .modal-auth-content h2 {
+            color: var(--color-primario);
+            margin-bottom: 0.5rem;
+        }
+        .modal-auth-content p {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+        .modal-auth-content input {
+            width: 100%;
+            padding: 0.8rem;
+            margin: 1rem 0;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+        .modal-auth-content button {
+            background: var(--color-primario);
+            color: white;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            width: 100%;
+            font-size: 1rem;
+            font-weight: bold;
+        }
+        .modal-auth-content button:hover {
+            background: var(--color-secundario);
+        }
+        .checkbox-recordar {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin: 1rem 0;
+            justify-content: flex-start;
+        }
+        .mensaje-error {
+            color: #f44336;
+            margin-top: 0.5rem;
+            font-size: 0.9rem;
+        }
+        .btn-cerrar-sesion {
+            background: #f44336;
+            color: white;
+            border: none;
+            padding: 0.3rem 0.8rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            margin-left: 1rem;
+        }
+        .btn-cerrar-sesion:hover {
+            background: #d32f2f;
+        }
+        
+        /* ===== ESTILOS EXISTENTES ===== */
+        .sidebar {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 260px;
+            height: 100%;
+            background: var(--color-primario);
+            color: white;
+            padding: 1.5rem;
+            overflow-y: auto;
+            z-index: 100;
+        }
+        .sidebar h2 {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-align: center;
+        }
+        .sidebar nav ul {
+            list-style: none;
+        }
+        .sidebar nav li {
+            margin-bottom: 0.5rem;
+        }
+        .sidebar nav a {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            transition: background 0.3s;
+        }
+        .sidebar nav a:hover,
+        .sidebar nav a.active {
+            background: rgba(255,255,255,0.2);
+        }
+        .sidebar nav a i {
+            width: 24px;
+        }
+        .main-content {
+            margin-left: 260px;
+            padding: 2rem;
+        }
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--color-secundario);
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        .header h1 {
+            color: var(--color-primario);
+        }
+        .logo-header {
+            font-size: 1.2rem;
+            font-weight: bold;
+            background: var(--color-secundario);
+            padding: 0.3rem 1rem;
+            border-radius: 50px;
+            display: inline-block;
+        }
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .stat-card h3 {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+        .stat-card .value {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--color-primario);
+        }
+        .chart-container {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+        .section-card {
+            background: white;
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            width: 100%;
+            overflow-x: auto;
+        }
+        .section-card h2 {
+            color: var(--color-primario);
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 100%;
+        }
+        .data-table th,
+        .data-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid #eee;
+            vertical-align: top;
+            word-break: break-word;
+        }
+        .data-table th {
+            background: #f8f9fa;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+        .data-table input,
+        .data-table textarea {
+            width: 100%;
+            min-width: 120px;
+            padding: 0.6rem;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-family: inherit;
+            background: white;
+            transition: border-color 0.2s;
+        }
+        .data-table input:focus,
+        .data-table textarea:focus {
+            outline: none;
+            border-color: var(--color-secundario);
+            box-shadow: 0 0 0 2px rgba(241, 143, 1, 0.1);
+        }
+        .data-table textarea {
+            resize: vertical;
+            min-height: 70px;
+        }
+        .save-btn {
+            background: var(--color-secundario);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 0.85rem;
+            font-weight: 500;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+        .save-btn:hover {
+            background: var(--color-acento);
+            transform: translateY(-1px);
+        }
+        .save-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+        }
+        .success {
+            background: #d4edda;
+            color: #155724;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        .error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+        
+        /* ===== EN MÓVIL ===== */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 70px;
+                padding: 1rem;
+            }
+            .sidebar h2 { display: none; }
+            .sidebar nav a span { display: none; }
+            .main-content {
+                margin-left: 70px;
+                padding: 1rem;
+            }
+            .table-responsive {
+                overflow-x: visible;
+            }
+            .data-table,
+            .data-table thead,
+            .data-table tbody,
+            .data-table th,
+            .data-table td,
+            .data-table tr {
+                display: block;
+            }
+            .data-table thead {
+                display: none;
+            }
+            .data-table tr {
+                margin-bottom: 1.5rem;
+                border: 1px solid #e0e0e0;
+                border-radius: 12px;
+                padding: 1rem;
+                background: white;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            }
+            .data-table td {
+                display: flex;
+                align-items: flex-start;
+                gap: 0.8rem;
+                padding: 0.6rem 0;
+                border-bottom: 1px solid #f0f0f0;
+            }
+            .data-table td:last-child {
+                border-bottom: none;
+            }
+            .data-table td:before {
+                content: attr(data-label);
+                font-weight: 600;
+                min-width: 100px;
+                color: var(--color-primario);
+            }
+            .data-table input,
+            .data-table textarea {
+                flex: 1;
+                min-width: 0;
+            }
+            .save-btn {
+                margin-top: 0.5rem;
+                width: 100%;
+            }
+        }
+        @media (max-width: 480px) {
+            .data-table td:before {
+                min-width: 85px;
+                font-size: 0.85rem;
+            }
+            .data-table input,
+            .data-table textarea {
+                font-size: 0.85rem;
+                padding: 0.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- MODAL DE AUTENTICACIÓN -->
+    <div id="modalAuth" class="modal-auth">
+        <div class="modal-auth-content">
+            <i class="fas fa-lock"></i>
+            <h2>Acceso al Panel Admin</h2>
+            <p>Ingresa la contraseña para editar el contenido</p>
+            <input type="password" id="passwordInput" placeholder="Contraseña" autocomplete="off">
+            <div class="checkbox-recordar">
+                <input type="checkbox" id="recordarCheckbox">
+                <label>Recordarme (no pedir de nuevo)</label>
+            </div>
+            <button onclick="verificarPassword()">Ingresar</button>
+            <div id="errorMensaje" class="mensaje-error"></div>
+        </div>
+    </div>
+
+    <!-- PANEL ADMIN (oculto hasta autenticación) -->
+    <div id="adminPanel" style="display: none;">
+        <div class="sidebar">
+            <h2><i class="fas fa-hotel"></i> <span id="sidebar-logo">Admin</span></h2>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-link active" data-section="dashboard"><i class="fas fa-chart-line"></i> <span>Dashboard</span></a></li>
+                    <li><a href="#" class="nav-link" data-section="habitaciones"><i class="fas fa-bed"></i> <span>Habitaciones</span></a></li>
+                    <li><a href="#" class="nav-link" data-section="experiencias"><i class="fas fa-umbrella-beach"></i> <span>Experiencias</span></a></li>
+                    <li><a href="#" class="nav-link" data-section="servicios"><i class="fas fa-concierge-bell"></i> <span>Servicios</span></a></li>
+                    <li><a href="#" class="nav-link" data-section="reservas"><i class="fas fa-calendar-check"></i> <span>Reservas</span></a></li>
+                </ul>
+            </nav>
+        </div>
+
+        <div class="main-content">
+            <div class="header">
+                <div>
+                    <h1 id="sectionTitle">Dashboard</h1>
+                    <div id="hotel-info" class="logo-header"></div>
+                </div>
+                <div id="saveStatus"></div>
+            </div>
+            <div id="contentArea">
+                <div class="loading">Cargando...</div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // AUTENTICACIÓN
+        // ============================================
+        let modoEdicion = false;
+        let passwordActual = '';
+        let datosAdmin = {
+            habitaciones: [],
+            experiencias: [],
+            servicios: [],
+            reservas: []
+        };
+        let configAdmin = {};
+        let currentSection = 'dashboard';
+        let chart = null;
+
+        // Verificar sesión guardada
+        function verificarSesion() {
+            const sesion = localStorage.getItem('admin_sesion');
+            if (sesion) {
+                const { password, expira } = JSON.parse(sesion);
+                if (expira > Date.now()) {
+                    modoEdicion = true;
+                    passwordActual = password;
+                    mostrarAdminPanel();
+                    return true;
+                } else {
+                    localStorage.removeItem('admin_sesion');
+                }
+            }
+            return false;
+        }
+
+        async function verificarPassword() {
+            const password = document.getElementById('passwordInput').value;
+            const recordar = document.getElementById('recordarCheckbox').checked;
+            const errorDiv = document.getElementById('errorMensaje');
+            
+            if (!password) {
+                errorDiv.textContent = 'Por favor ingresa la contraseña';
+                return;
+            }
+            
+            try {
+                const respuesta = await fetch('/api/verificar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                
+                const resultado = await respuesta.json();
+                
+                if (resultado.success) {
+                    modoEdicion = true;
+                    passwordActual = password;
+                    
+                    if (recordar) {
+                        localStorage.setItem('admin_sesion', JSON.stringify({
+                            password: password,
+                            expira: Date.now() + (30 * 24 * 60 * 60 * 1000)
+                        }));
+                    }
+                    
+                    mostrarAdminPanel();
+                } else {
+                    errorDiv.textContent = 'Contraseña incorrecta';
+                }
+            } catch (error) {
+                errorDiv.textContent = 'Error de conexión con el servidor';
+            }
+        }
+
+        function mostrarAdminPanel() {
+            document.getElementById('modalAuth').classList.remove('active');
+            document.getElementById('adminPanel').style.display = 'block';
+            cargarTodoAdmin();
+        }
+
+        function cerrarSesion() {
+            localStorage.removeItem('admin_sesion');
+            modoEdicion = false;
+            passwordActual = '';
+            document.getElementById('adminPanel').style.display = 'none';
+            document.getElementById('modalAuth').classList.add('active');
+            document.getElementById('passwordInput').value = '';
+        }
+
+        // ============================================
+        // FUNCIONES DE API (SIN TOKENS)
+        // ============================================
+        async function cargarDatosAdmin() {
+            try {
+                const respuesta = await fetch('/api/datos');
+                datosAdmin = await respuesta.json();
+                return true;
+            } catch (error) {
+                console.error('Error cargando datos:', error);
+                return false;
+            }
+        }
+
+        async function cargarConfigAdmin() {
+            try {
+                const respuesta = await fetch('/api/config');
+                configAdmin = await respuesta.json();
+                if (configAdmin.marca?.colores) {
+                    const c = configAdmin.marca.colores;
+                    document.documentElement.style.setProperty('--color-primario', c.primario);
+                    document.documentElement.style.setProperty('--color-secundario', c.secundario);
+                    document.documentElement.style.setProperty('--color-acento', c.acento);
+                    document.documentElement.style.setProperty('--color-texto', c.texto);
+                    document.documentElement.style.setProperty('--color-fondo', c.fondo);
+                }
+                if (configAdmin.marca?.logo) {
+                    document.getElementById('sidebar-logo').textContent = configAdmin.marca.logo;
+                    document.getElementById('hotel-info').innerHTML = configAdmin.marca.logo;
+                }
+                if (configAdmin.marca?.nombre) {
+                    document.title = `Panel Admin - ${configAdmin.marca.nombre}`;
+                }
+                return true;
+            } catch (error) {
+                console.error('Error cargando configuración:', error);
+                return false;
+            }
+        }
+
+        async function guardarDatosAdmin() {
+            if (!modoEdicion) return false;
+            
+            try {
+                const respuesta = await fetch('/api/guardar-datos', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        password: passwordActual,
+                        datos: datosAdmin
+                    })
+                });
+                
+                const resultado = await respuesta.json();
+                if (resultado.success) {
+                    mostrarMensaje('✅ Datos guardados correctamente', 'success');
+                    return true;
+                } else {
+                    mostrarMensaje('❌ Error: ' + resultado.error, 'error');
+                    return false;
+                }
+            } catch (error) {
+                mostrarMensaje('❌ Error de conexión', 'error');
+                return false;
+            }
+        }
+
+        function mostrarMensaje(mensaje, tipo) {
+            const statusDiv = document.getElementById('saveStatus');
+            statusDiv.innerHTML = `<div class="${tipo}">${mensaje}</div>`;
+            setTimeout(() => {
+                statusDiv.innerHTML = '';
+            }, 3000);
+        }
+
+        // ============================================
+        // NAVEGACIÓN
+        // ============================================
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.addEventListener('click', (e) => {
+                e.preventDefault();
+                const section = link.dataset.section;
+                document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+                loadSection(section);
+            });
+        });
+
+        function loadSection(section) {
+            currentSection = section;
+            const titles = {
+                dashboard: 'Dashboard',
+                habitaciones: configAdmin.admin?.textos?.titulo_habitaciones || 'Gestión de Habitaciones',
+                experiencias: configAdmin.admin?.textos?.titulo_experiencias || 'Gestión de Experiencias',
+                servicios: configAdmin.admin?.textos?.titulo_servicios || 'Gestión de Servicios',
+                reservas: configAdmin.admin?.textos?.titulo_reservas || 'Lista de Reservas'
+            };
+            document.getElementById('sectionTitle').textContent = titles[section];
+
+            switch(section) {
+                case 'dashboard':
+                    loadDashboard();
+                    break;
+                case 'habitaciones':
+                    loadHabitaciones();
+                    break;
+                case 'experiencias':
+                    loadExperiencias();
+                    break;
+                case 'servicios':
+                    loadServicios();
+                    break;
+                case 'reservas':
+                    loadReservas();
+                    break;
+            }
+        }
+
+        // ============================================
+        // DASHBOARD
+        // ============================================
+        async function loadDashboard() {
+            const content = document.getElementById('contentArea');
+            content.innerHTML = '<div class="loading">Cargando estadísticas...</div>';
+            
+            await cargarDatosAdmin();
+            
+            const totalReservas = datosAdmin.reservas?.length || 0;
+            const ingresos = datosAdmin.reservas?.reduce((sum, r) => sum + (r.total || 0), 0) || 0;
+            
+            const meses = ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'];
+            const reservasPorMes = new Array(12).fill(0);
+            datosAdmin.reservas?.forEach(r => {
+                if (r.fecha) {
+                    const mes = new Date(r.fecha).getMonth();
+                    reservasPorMes[mes]++;
+                } else if (r.fecha_inicio) {
+                    const mes = new Date(r.fecha_inicio).getMonth();
+                    reservasPorMes[mes]++;
+                }
+            });
+            
+            content.innerHTML = `
+                <div class="stats-grid">
+                    <div class="stat-card"><h3>Total Habitaciones</h3><div class="value">${datosAdmin.habitaciones?.length || 0}</div></div>
+                    <div class="stat-card"><h3>Total Experiencias</h3><div class="value">${datosAdmin.experiencias?.length || 0}</div></div>
+                    <div class="stat-card"><h3>Total Reservas</h3><div class="value">${totalReservas}</div></div>
+                    <div class="stat-card"><h3>Ingresos Totales</h3><div class="value">$${ingresos.toLocaleString()}</div></div>
+                </div>
+                <div class="chart-container"><canvas id="reservasChart"></canvas></div>
+            `;
+            
+            const ctx = document.getElementById('reservasChart').getContext('2d');
+            if (chart) chart.destroy();
+            chart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels: meses, datasets: [{ label: 'Reservas por mes', data: reservasPorMes, backgroundColor: '#F18F01', borderRadius: 8 }] },
+                options: { responsive: true, plugins: { legend: { position: 'top' } } }
+            });
+        }
+
+        // ============================================
+        // FUNCIÓN PARA GENERAR TABLA CON LABELS
+        // ============================================
+        function generarTablaConLabels(items, columnas, tipo) {
+            if (!items || items.length === 0) return '<div class="section-card">No hay datos.</div>';
+            
+            const btnTexto = configAdmin.admin?.textos?.boton_guardar || 'Guardar';
+            const habilitado = modoEdicion ? '' : 'disabled';
+            
+            let html = `<div class="section-card"><div class="table-responsive"><table class="data-table"><thead>`;
+            
+            columnas.forEach(col => {
+                html += `<th>${col.label}</th>`;
+            });
+            html += `</thead><tbody>`;
+            
+            items.forEach((item, idx) => {
+                html += `<tr data-id="${item.id || idx}">`;
+                columnas.forEach(col => {
+                    if (col.campo === 'id') {
+                        html += `<td data-label="${col.label}">${item.id || idx + 1}<html>`;
+                    } else if (col.campo === 'acciones') {
+                        html += `<td data-label="${col.label}"><button class="save-btn" onclick="guardar${tipo}(${item.id || idx})" ${habilitado}>${btnTexto}</button></td>`;
+                    } else if (col.campo === 'descripcion') {
+                        html += `<td data-label="${col.label}"><textarea class="edit-${col.campo}" rows="2" ${habilitado}>${escapeHtml(item[col.campo] || '')}</textarea></td>`;
+                    } else if (col.campo === 'precio' || col.campo === 'disponibles') {
+                        html += `<td data-label="${col.label}"><input type="number" class="edit-${col.campo}" value="${item[col.campo] || 0}" ${habilitado}></td>`;
+                    } else {
+                        html += `<td data-label="${col.label}"><input type="text" class="edit-${col.campo}" value="${escapeHtml(item[col.campo] || '')}" ${habilitado}></td>`;
+                    }
+                });
+                html += `</tr>`;
+            });
+            
+            html += `</tbody></table></div></div>`;
+            return html;
+        }
+
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, m => {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            });
+        }
+
+        // ============================================
+        // HABITACIONES
+        // ============================================
+        async function loadHabitaciones() {
+            const content = document.getElementById('contentArea');
+            content.innerHTML = '<div class="loading">Cargando habitaciones...</div>';
+            
+            await cargarDatosAdmin();
+            
+            const columnas = [
+                { label: 'ID', campo: 'id' },
+                { label: 'Nombre', campo: 'nombre' },
+                { label: 'Descripción', campo: 'descripcion' },
+                { label: 'Precio', campo: 'precio' },
+                { label: 'Disponibles', campo: 'disponibles' },
+                { label: 'Promoción', campo: 'promocion' },
+                { label: 'Acciones', campo: 'acciones' }
+            ];
+            
+            content.innerHTML = generarTablaConLabels(datosAdmin.habitaciones, columnas, 'Habitacion');
+        }
+        
+        window.guardarHabitacion = async function(id) {
+            if (!modoEdicion) return;
+            
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (!row) return;
+            
+            const nombre = row.querySelector('.edit-nombre')?.value || '';
+            const descripcion = row.querySelector('.edit-descripcion')?.value || '';
+            const precio = parseInt(row.querySelector('.edit-precio')?.value) || 0;
+            const disponibles = parseInt(row.querySelector('.edit-disponibles')?.value) || 0;
+            const promocion = row.querySelector('.edit-promocion')?.value || '';
+            
+            const index = datosAdmin.habitaciones.findIndex(h => h.id === id);
+            if (index !== -1) {
+                datosAdmin.habitaciones[index] = {
+                    ...datosAdmin.habitaciones[index],
+                    nombre,
+                    descripcion,
+                    precio,
+                    disponibles,
+                    promocion: promocion || null
+                };
+                await guardarDatosAdmin();
+                loadHabitaciones();
+            }
+        };
+
+        // ============================================
+        // EXPERIENCIAS
+        // ============================================
+        async function loadExperiencias() {
+            const content = document.getElementById('contentArea');
+            content.innerHTML = '<div class="loading">Cargando experiencias...</div>';
+            
+            await cargarDatosAdmin();
+            
+            const columnas = [
+                { label: 'ID', campo: 'id' },
+                { label: 'Nombre', campo: 'nombre' },
+                { label: 'Descripción', campo: 'descripcion' },
+                { label: 'Precio', campo: 'precio' },
+                { label: 'Duración', campo: 'duracion' },
+                { label: 'Acciones', campo: 'acciones' }
+            ];
+            
+            content.innerHTML = generarTablaConLabels(datosAdmin.experiencias, columnas, 'Experiencia');
+        }
+        
+        window.guardarExperiencia = async function(id) {
+            if (!modoEdicion) return;
+            
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (!row) return;
+            
+            const nombre = row.querySelector('.edit-nombre')?.value || '';
+            const descripcion = row.querySelector('.edit-descripcion')?.value || '';
+            const precio = parseInt(row.querySelector('.edit-precio')?.value) || 0;
+            const duracion = row.querySelector('.edit-duracion')?.value || '';
+            
+            const index = datosAdmin.experiencias.findIndex(e => e.id === id);
+            if (index !== -1) {
+                datosAdmin.experiencias[index] = {
+                    ...datosAdmin.experiencias[index],
+                    nombre,
+                    descripcion,
+                    precio,
+                    duracion
+                };
+                await guardarDatosAdmin();
+                loadExperiencias();
+            }
+        };
+
+        // ============================================
+        // SERVICIOS
+        // ============================================
+        async function loadServicios() {
+            const content = document.getElementById('contentArea');
+            content.innerHTML = '<div class="loading">Cargando servicios...</div>';
+            
+            await cargarDatosAdmin();
+            
+            const serviciosConId = datosAdmin.servicios.map((s, idx) => ({ ...s, id: idx + 1 }));
+            const columnas = [
+                { label: 'ID', campo: 'id' },
+                { label: 'Nombre', campo: 'nombre' },
+                { label: 'Descripción', campo: 'descripcion' },
+                { label: 'Horario', campo: 'horario' },
+                { label: 'Acciones', campo: 'acciones' }
+            ];
+            
+            content.innerHTML = generarTablaConLabels(serviciosConId, columnas, 'Servicio');
+        }
+        
+        window.guardarServicio = async function(id) {
+            if (!modoEdicion) return;
+            
+            const row = document.querySelector(`tr[data-id="${id}"]`);
+            if (!row) return;
+            
+            const nombre = row.querySelector('.edit-nombre')?.value || '';
+            const descripcion = row.querySelector('.edit-descripcion')?.value || '';
+            const horario = row.querySelector('.edit-horario')?.value || '';
+            
+            const index = id - 1;
+            if (datosAdmin.servicios[index]) {
+                datosAdmin.servicios[index] = {
+                    ...datosAdmin.servicios[index],
+                    nombre,
+                    descripcion,
+                    horario
+                };
+                await guardarDatosAdmin();
+                loadServicios();
+            }
+        };
+
+        // ============================================
+        // RESERVAS
+        // ============================================
+        async function loadReservas() {
+            const content = document.getElementById('contentArea');
+            content.innerHTML = '<div class="loading">Cargando reservas...</div>';
+            
+            await cargarDatosAdmin();
+            
+            if (!datosAdmin.reservas || datosAdmin.reservas.length === 0) {
+                content.innerHTML = '<div class="section-card">No hay reservas aún.</div>';
+                return;
+            }
+            
+            let html = `<div class="section-card">
+                <h2><i class="fas fa-calendar-check"></i> Reservas</h2>
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr><th>ID</th><th>Cliente</th><th>Email</th><th>Item</th><th>Fechas</th><th>Total</th><th>Estado</th><th>Fecha</th></tr>
+                        </thead>
+                        <tbody>`;
+            
+            datosAdmin.reservas.forEach(r => {
+                const fechas = r.tipo === 'habitacion' ? `${r.fecha_inicio || '-'} → ${r.fecha_fin || '-'}` : r.fecha || '-';
+                html += `
+                    <tr>
+                        <td data-label="ID">${r.id || '-'}</td>
+                        <td data-label="Cliente">${escapeHtml(r.cliente_nombre || '-')}</td>
+                        <td data-label="Email">${escapeHtml(r.cliente_email || '-')}</td>
+                        <td data-label="Item">${escapeHtml(r.item_nombre || '-')}</td>
+                        <td data-label="Fechas">${fechas}</td>
+                        <td data-label="Total">$${r.total || 0}</td>
+                        <td data-label="Estado"><span style="background:${r.estado === 'pendiente' ? '#ff9800' : '#4caf50'}; color:white; padding:0.2rem 0.5rem; border-radius:20px;">${r.estado || 'pendiente'}</span></td>
+                        <td data-label="Fecha">${r.fecha_reserva ? new Date(r.fecha_reserva).toLocaleDateString() : '-'}</td>
+                    </tr>
+                `;
+            });
+            
+            html += `</tbody></table></div></div>`;
+            content.innerHTML = html;
+        }
+
+        // ============================================
+        // CARGA PRINCIPAL
+        // ============================================
+        async function cargarTodoAdmin() {
+            await cargarConfigAdmin();
+            await cargarDatosAdmin();
+            loadSection('dashboard');
+            
+            // Agregar botón de cerrar sesión
+            const header = document.querySelector('.header');
+            if (header && !document.getElementById('btnCerrarSesion')) {
+                const btnCerrar = document.createElement('button');
+                btnCerrar.id = 'btnCerrarSesion';
+                btnCerrar.className = 'btn-cerrar-sesion';
+                btnCerrar.innerHTML = '<i class="fas fa-sign-out-alt"></i> Cerrar sesión';
+                btnCerrar.onclick = cerrarSesion;
+                header.appendChild(btnCerrar);
+            }
+        }
+
+        // Iniciar
+        if (!verificarSesion()) {
+            document.getElementById('modalAuth').classList.add('active');
+        }
+    </script>
+</body>
+</html>
