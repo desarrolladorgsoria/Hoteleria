@@ -1,0 +1,111 @@
+{
+  "habitaciones": [
+    {
+      "id": 1,
+      "nombre": "Habitación Deluxe",
+      "descripcion": "Amplia habitación con vista parcial al mar, cama king size y terraza privada.",
+      "precio": 150,
+      "imagen": "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+      "caracteristicas": ["Vista al mar", "King size", "Jacuzzi"],
+      "badgePermanente": "Vista al mar",
+      "badgeTipo": "vista",
+      "disponibles": 5,
+      "promocion": null
+    },
+    {
+      "id": 2,
+      "nombre": "Suite Presidencial",
+      "descripcion": "Suite exclusiva con terraza frente al mar, sala independiente y servicio mayordomo.",
+      "precio": 350,
+      "imagen": "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600",
+      "caracteristicas": ["Frente al mar", "Sala privada", "Bienvenida"],
+      "badgePermanente": "Exclusiva",
+      "badgeTipo": "exclusiva",
+      "disponibles": 2,
+      "promocion": "15% OFF"
+    },
+    {
+      "id": 3,
+      "nombre": "Habitación Estándar",
+      "descripcion": "Cómoda habitación con todas las comodidades necesarias para una estancia perfecta.",
+      "precio": 90,
+      "imagen": "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600",
+      "caracteristicas": ["Queen size", "TV LED", "Jardín"],
+      "badgePermanente": "Económica",
+      "badgeTipo": "economica",
+      "disponibles": 8,
+      "promocion": null
+    },
+    {
+      "id": 4,
+      "nombre": "Bungalow Familiar",
+      "descripcion": "Amplio bungalow con 2 habitaciones, cocina equipada y terraza con barbacoa.",
+      "precio": 280,
+      "imagen": "https://images.unsplash.com/photo-1620331311520-246422fd82f9?w=600",
+      "caracteristicas": ["2 habitaciones", "Cocina", "Barbacoa"],
+      "badgePermanente": "Familiar",
+      "badgeTipo": "popular",
+      "disponibles": 3,
+      "promocion": null
+    }
+  ],
+  "experiencias": [
+    {
+      "id": 1,
+      "nombre": "Atardecer en Catamarán",
+      "descripcion": "Navega por aguas cristalinas mientras el sol pinta el cielo de colores.",
+      "precio": 89,
+      "imagen": "https://images.unsplash.com/photo-1548574505-5e239809ee19?w=600",
+      "duracion": "4 horas",
+      "incluye": ["Open bar", "Snacks", "Fotos"]
+    },
+    {
+      "id": 2,
+      "nombre": "Buceo en Arrecife",
+      "descripcion": "Explora el segundo arrecife más grande del caribe.",
+      "precio": 75,
+      "imagen": "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600",
+      "duracion": "3 horas",
+      "incluye": ["Equipo completo", "Guía", "Fotos"]
+    }
+  ],
+  "servicios": [
+    {
+      "nombre": "Piscina Infinity",
+      "descripcion": "Disfruta de nuestra piscina con vista al mar y servicio de bar",
+      "icono": "<i class='fas fa-swimming-pool'></i>",
+      "horario": "8:00 - 20:00"
+    },
+    {
+      "nombre": "Spa & Bienestar",
+      "descripcion": "Masajes, tratamientos faciales y circuito de aguas",
+      "icono": "<i class='fas fa-spa'></i>",
+      "horario": "10:00 - 20:00"
+    },
+    {
+      "nombre": "Gimnasio",
+      "descripcion": "Equipamiento de última generación con vista al mar",
+      "icono": "<i class='fas fa-dumbbell'></i>",
+      "horario": "24 horas"
+    },
+    {
+      "nombre": "Restaurante",
+      "descripcion": "Gastronomía local e internacional con productos frescos",
+      "icono": "<i class='fas fa-utensils'></i>",
+      "horario": "7:00 - 23:00"
+    },
+    {
+      "nombre": "Bar en la Playa",
+      "descripcion": "Cócteles y snacks directamente en la arena",
+      "icono": "<i class='fas fa-cocktail'></i>",
+      "horario": "11:00 - 19:00"
+    },
+    {
+      "nombre": "WiFi Gratuito",
+      "descripcion": "Conexión de alta velocidad en todo el hotel",
+      "icono": "<i class='fas fa-wifi'></i>",
+      "horario": "24 horas"
+    }
+  ],
+  "reservas": []
+}

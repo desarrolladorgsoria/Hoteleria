@@ -1,0 +1,168 @@
+{
+    "marca": {
+        "nombre": "Casa Palmeras",
+        "logo": "🌴 Casa Palmeras",
+        "colores": {
+            "primario": "#0B4F6C",
+            "secundario": "#F18F01",
+            "acento": "#2EC4B6",
+            "texto": "#2D3047",
+            "fondo": "#F7F7F2"
+        }
+    },
+    "stripe": {
+        "public_key": "pk_live_TU_CLAVE_PUBLICA_AQUI",
+        "secret_key": "sk_live_TU_CLAVE_SECRETA_AQUI"
+    },
+    "hero": {
+        "texto_superior": "BIENVENIDOS A",
+        "texto_principal": "Casa Palmeras",
+        "texto_inferior": "TU PARAISO TROPICAL",
+        "boton": "Ver habitaciones",
+        "imagen": "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=1600",
+        "overlay": 0.4
+    },
+    "nosotros": {
+        "titulo": "Sobre Nosotros",
+        "subtitulo": "Más de 20 años creando experiencias inolvidables",
+        "imagen": "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800",
+        "historia": "Casa Palmeras nació en 2003 del sueño de una familia local por compartir la belleza del Caribe con el mundo. Lo que comenzó como una pequeña posada de 5 habitaciones, hoy es un hotel boutique de 40 habitaciones que mantiene la calidez y el trato familiar que nos caracteriza. Nuestra filosofía se basa en la sostenibilidad, el respeto por la cultura local y la búsqueda constante de la excelencia para que cada huésped se sienta como en casa.",
+        "valores": [
+            {
+                "icono": "<i class='fas fa-leaf'></i>",
+                "texto": "Sostenibilidad"
+            },
+            {
+                "icono": "<i class='fas fa-handshake'></i>",
+                "texto": "Trato familiar"
+            },
+            {
+                "icono": "<i class='fas fa-star'></i>",
+                "texto": "Excelencia"
+            },
+            {
+                "icono": "<i class='fas fa-water'></i>",
+                "texto": "Pasión por el mar"
+            }
+        ]
+    },
+    "testimonios": {
+        "titulo": "Lo que dicen nuestros huéspedes",
+        "subtitulo": "Experiencias reales de quienes ya vivieron el Caribe",
+        "lista": [
+            {
+                "nombre": "María González",
+                "lugar": "Madrid, España",
+                "texto": "Una experiencia inolvidable. Las habitaciones son increíbles, el personal súper atento y la comida del restaurante espectacular. Sin duda volveremos.",
+                "rating": 5,
+                "avatar": "https://randomuser.me/api/portraits/women/44.jpg"
+            },
+            {
+                "nombre": "Carlos Rodríguez",
+                "lugar": "Buenos Aires, Argentina",
+                "texto": "El lugar perfecto para desconectar. La piscina infinity es una maravilla y el atardecer desde el bar de la playa no tiene precio. Muy recomendable.",
+                "rating": 5,
+                "avatar": "https://randomuser.me/api/portraits/men/32.jpg"
+            },
+            {
+                "nombre": "Ana López",
+                "lugar": "Barcelona, España",
+                "texto": "Fuimos en familia y todos quedamos encantados. Los niños disfrutaron muchísimo y nosotros pudimos relajarnos en el spa. Repetiremos seguro.",
+                "rating": 4,
+                "avatar": "https://randomuser.me/api/portraits/women/63.jpg"
+            }
+        ]
+    },
+    "galeria": {
+        "titulo": "Galería de Fotos",
+        "subtitulo": "Momentos inolvidables en Casa Palmeras",
+        "items": [
+            {
+                "titulo": "Piscina Infinity",
+                "descripcion": "Disfruta de nuestra piscina con vista al mar",
+                "categoria": "piscina",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1571896349842-33c89424de2d?w=600",
+                    "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600",
+                    "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=600",
+                    "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=600"
+                ]
+            },
+            {
+                "titulo": "Habitaciones de Lujo",
+                "descripcion": "Espacios diseñados para tu confort",
+                "categoria": "habitaciones",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=600",
+                    "https://images.unsplash.com/photo-1631049307264-da0ec9d70304?w=600",
+                    "https://images.unsplash.com/photo-1566665797739-1674de7a421a?w=600",
+                    "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=600"
+                ]
+            },
+            {
+                "titulo": "Restaurante El Mirador",
+                "descripcion": "Gastronomía con vista al mar",
+                "categoria": "restaurante",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?w=600",
+                    "https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600",
+                    "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?w=600",
+                    "https://images.unsplash.com/photo-1559339352-11d035aa65de?w=600"
+                ]
+            },
+            {
+                "titulo": "Spa Caribeño",
+                "descripcion": "Relajación y bienestar",
+                "categoria": "spa",
+                "fotos": [
+                    "https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=600",
+                    "https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?w=600",
+                    "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?w=600",
+                    "https://images.unsplash.com/photo-1540555700478-4be289fbecef?w=600"
+                ]
+            }
+        ]
+    },
+    "contacto": {
+        "titulo": "¿Listo para vivir el Caribe?",
+        "subtitulo": "Reserva ahora o consultanos cualquier duda",
+        "direccion": "Playa Escondida, Calle del Mar #45, St. John's, Antigua",
+        "telefono": "+1 268 123 4567",
+        "email": "reservas@casapalmeras.com",
+        "mapa": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d30823.727456402!2d-61.848571!3d17.117963!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8c13f1a123456789%3A0x123456789abcdef!2sSt.John's%2C%20Antigua%20y%20Barbuda!5e0!3m2!1ses!2ses!4v1234567890123!5m2!1ses!2ses",
+        "redes": [
+            { "nombre": "Facebook", "url": "#", "icono": "<i class='fab fa-facebook-f'></i>" },
+            { "nombre": "Instagram", "url": "#", "icono": "<i class='fab fa-instagram'></i>" },
+            { "nombre": "Twitter", "url": "#", "icono": "<i class='fab fa-twitter'></i>" }
+        ]
+    },
+    "reservas": {
+        "titulo": "Reserva tu estancia",
+        "subtitulo": "Selecciona fechas y completa tus datos"
+    },
+    "footer": {
+        "texto": "© 2025 Casa Palmeras · Hecho con <i class='fas fa-heart'></i> en el Caribe"
+    },
+    "admin": {
+        "estilos": {
+            "tabla_min_width": "700px",
+            "columna_nombre": "200px",
+            "columna_descripcion": "350px",
+            "columna_precio": "110px",
+            "columna_disponibles": "110px",
+            "columna_promocion": "130px",
+            "columna_acciones": "90px"
+        },
+        "textos": {
+            "titulo_habitaciones": "Gestión de Habitaciones",
+            "titulo_experiencias": "Gestión de Experiencias",
+            "titulo_servicios": "Gestión de Servicios",
+            "titulo_reservas": "Lista de Reservas",
+            "boton_guardar": "Guardar"
+        },
+        "seguridad": {
+            "contraseña": "admin123",
+            "mensaje_bienvenida": "Ingresa la contraseña para editar"
+        }
+    }
+}
